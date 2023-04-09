@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Make an order</title>
+</head>
+<body>
+    <h1>Let's assume that here you can create your order</h1>
+
+    <form method="POST">
+        {{ customer_form.as_div }}
+
+        {{ pizza_form.as_div}}
+
+        {{ order_form.as_div }}
+
+        <button type="submit">Create order</button>
+        {% csrf_token %}
+    </form>
+   {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</body>
+</html>
