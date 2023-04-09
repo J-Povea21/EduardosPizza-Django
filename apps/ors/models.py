@@ -75,7 +75,7 @@ class Rating(models.Model):
 
 
 class Order(models.Model):
-    customer_id = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT)
 
     payment_methods = (
@@ -95,23 +95,20 @@ class Order(models.Model):
 
     domicile_price = models.PositiveIntegerField(default=8000)
 
-    def save(self, customer=None, *args, **kwargs):
+    def save(self, customer=None, coupon_discount=None, *args, **kwargs):
 
-        # coupon = kwargs.pop('coupon', None)
-        # if coupon is not None:
-        #     coupon_discount = float(kwargs.pop('coupon_discount', None))
-        #     self.discount = coupon_discount
-        #     total_value_calc -= (total_value_calc * coupon_discount)
-
-        self.customer_id = customer
+        self.discount = coupon_discount
+        self.customer = customer
         self.deliveryman = random.choice(Deliveryman.objects.all())
-        self.destination = self.customer_id.address
+        self.destination = self.customer.address
         super(Order, self).save(*args, **kwargs)
 
     def calculate_total_value(self) -> None:
         pizza = Order.objects.latest('id').pizza
 
-        total_value_calc = pizza.price + self.domicile_price
+        total_value_calc = pizza.total_price + self.domicile_price
+        total_value_calc -= total_value_calc * self.discount
+
         self.total_value = total_value_calc
         super().save()
 
@@ -138,8 +135,8 @@ class Pizza(models.Model):
         ('XL', 'Extra Large')
     )
 
-    order_reference = models.OneToOneField(Order, on_delete=models.CASCADE,
-                                           null=True, related_name='pizza')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE,
+                                 null=True, related_name='pizza')
 
     size = models.CharField(max_length=2, choices=size_types)
 
@@ -157,21 +154,21 @@ class Pizza(models.Model):
 
     ingredients = models.ManyToManyField(Ingredient)
 
-    price = models.FloatField(default=0)
+    total_price = models.FloatField(default=0)
 
     def save(self, order=None, ingredients=None,
              *args, **kwargs):
         self.price_per_mass = self.values_dict['mass'][self.mass_type]
         self.price_per_size = self.values_dict['size'][self.size]
-        self.order_reference = order
+        self.order = order
 
         super(Pizza, self).save(*args, **kwargs)
 
         self.ingredients.set(ingredients)
 
-        self.price += self.price_per_mass \
-                      + self.price_per_size \
-                      + self.ingredients.aggregate(
+        self.total_price += self.price_per_mass \
+                            + self.price_per_size \
+                            + self.ingredients.aggregate(
             Sum('price_per_pizza'))['price_per_pizza__sum']
 
         super(Pizza, self).save(*args, **kwargs)

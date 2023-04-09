@@ -16,11 +16,13 @@ class CustomerForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
+    coupon_code = forms.CharField(max_length=7, required=False)
+
     class Meta:
         model = Order
 
         exclude = ['discount', 'total_value',
-                   'domicile_price', 'date', 'customer_id', 'deliveryman',
+                   'domicile_price', 'date', 'customer', 'deliveryman',
                    'destination']
 
 
@@ -28,4 +30,4 @@ class PizzaForm(forms.ModelForm):
     class Meta:
         model = Pizza
 
-        exclude = ['price', 'price_per_size', 'price_per_mass', 'order_reference']
+        exclude = ['total_price', 'price_per_size', 'price_per_mass', 'order']
