@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import OrderForm, CustomerForm, PizzaForm
-from .models import Order, Coupon
+from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm
+from .models import Order, Coupon, Rating
 
 
 # Create your views here.
@@ -49,7 +49,7 @@ def create_order(request, **kwargs):
             # And finally we update the total value of the order with the pizza
             order.calculate_total_value()
 
-            return redirect('create_order')
+            return redirect('order_in_progress')
     else:
         customer_form = CustomerForm()
         order_form = OrderForm()
@@ -60,3 +60,20 @@ def create_order(request, **kwargs):
         'customer_form': customer_form,
         'order_form': order_form
     })
+
+
+def order_in_progress(request):
+
+    if request.method == "POST":
+
+        # We get the latest order because we know is the one we are working on
+        order = Order.objects.latest('id')
+        rating_form = RatingForm(request.POST)
+
+        if rating_form.is_valid():
+            rating = rating_form.save(commit=False)
+            rating.save(order=order)
+            return redirect('create_order')
+    else:
+        rating_form = RatingForm()
+    return render(request, 'order_in_progress.html', {'rating_form': rating_form})

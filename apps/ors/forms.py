@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, Customer, Pizza
+from .models import Order, Customer, Pizza, Rating
 
 
 class CustomerForm(forms.ModelForm):
@@ -24,6 +24,10 @@ class OrderForm(forms.ModelForm):
         exclude = ['discount', 'total_value',
                    'domicile_price', 'date', 'customer', 'deliveryman',
                    'destination']
+        labels = {
+            'payment_method': 'Método de pago',
+            'coupon_code': 'Código de cupón (opcional)',
+        }
 
 
 class PizzaForm(forms.ModelForm):
@@ -31,3 +35,15 @@ class PizzaForm(forms.ModelForm):
         model = Pizza
 
         exclude = ['total_price', 'price_per_size', 'price_per_mass', 'order']
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+
+        exclude = ['order']
+
+        labels = {
+            'rating_value': 'Calificación',
+            'message': 'Mensaje (opcional)',
+        }

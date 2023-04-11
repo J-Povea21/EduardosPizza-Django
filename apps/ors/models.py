@@ -53,8 +53,8 @@ class Coupon(models.Model):
 
 
 class Rating(models.Model):
-    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    order = models.OneToOneField('Order', on_delete=models.DO_NOTHING, related_name='rating',
+                                 null=True)
 
     rating_values = (
         (1, '1'),
@@ -65,13 +65,22 @@ class Rating(models.Model):
     )
     rating_value = models.PositiveIntegerField(choices=rating_values)
 
-    def save(self, *args, **kwargs):
-        self.deliveryman.ratings_counter += 1
-        self.deliveryman.stars = Rating.objects \
-            .filter(deliveryman=self.deliveryman) \
-            .aggregate(Avg('stars'))['stars_avg']
-        self.deliveryman.save()
+    message = models.CharField(max_length=200, blank=True)
+
+    def save(self, order=None, *args, **kwargs):
+        self.order = order
         super(Rating, self).save(*args, **kwargs)
+
+        deliveryman = Deliveryman.objects.get(id=self.order.deliveryman.id)
+        total_ratings = deliveryman.ratings_counter + 1
+
+        current_stars = deliveryman.stars
+        new_average = current_stars + ((self.rating_value - current_stars) / total_ratings)
+        new_average = round(new_average, 2)
+
+        deliveryman.stars = new_average
+        deliveryman.ratings_counter = total_ratings
+        deliveryman.save()
 
 
 class Order(models.Model):
@@ -96,7 +105,6 @@ class Order(models.Model):
     domicile_price = models.PositiveIntegerField(default=8000)
 
     def save(self, customer=None, coupon_discount=None, *args, **kwargs):
-
         self.discount = coupon_discount
         self.customer = customer
         self.deliveryman = random.choice(Deliveryman.objects.all())
