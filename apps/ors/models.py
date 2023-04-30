@@ -22,6 +22,9 @@ class Person(models.Model):
         validators=[validate_cedula],
     )
 
+    def __str__(self):
+        return f'{self.name}'
+
     class Meta:
         abstract = True
 
@@ -96,8 +99,8 @@ class Rating(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
-    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
+    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT, related_name='deliveries')
 
     payment_methods = (
         ('EFECTIVO', 'Efectivo'),
@@ -117,7 +120,6 @@ class Order(models.Model):
     domicile_price = models.PositiveIntegerField(default=8000)
 
     def save(self, customer=None, coupon=None, *args, **kwargs):
-
         if coupon:
             self.discount = coupon.discount
             coupon.update_status_to_redeemed()

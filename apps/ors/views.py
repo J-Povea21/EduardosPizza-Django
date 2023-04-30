@@ -1,12 +1,53 @@
 from django.shortcuts import render, redirect
 from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm
-from .models import Order, Coupon
+from .models import Order, Coupon, Ingredient, Rating
 
 
 # Create your views here.
 
 def admin_panel(request):
-    return render(request, 'admin_panel.html')
+    orders = Order.objects.all()
+    title = 'Ordenes'
+    return render(request, 'davur/order_list.html',
+                  context={'orders': orders,
+                           'title': title
+                           }
+                  )
+
+def statistics(request):
+    return render(request, 'davur/statistics.html')
+
+
+def reviews(request):
+    reviews_list = Rating.objects.all()
+    title = 'Reseñas'
+    return render(request, 'davur/reviews.html',
+                  context={'reviews': reviews_list,
+                           'title': title,
+                           }
+    )
+
+
+def order_list(request):
+    return render(request, 'davur/order_list.html')
+
+
+def customers(request):
+    return render(request, 'davur/customers.html')
+
+
+def masses(request):
+    return render(request, 'davur/masses.html')
+
+
+def ingredients(request):
+    return render(request, 'davur/ingredients.html', context=
+    {'ingredients': Ingredient.objects.all(), 'title': 'Ingredientes'}
+                  )
+
+
+def edit_ingredient(request, ingredient_id):
+    return redirect('ingredients')
 
 
 def create_order(request, **kwargs):
@@ -54,6 +95,10 @@ def create_order(request, **kwargs):
         'order_form': order_form,
         'coupon_form': coupon_form
     })
+
+
+def test(request):
+    return render(request, 'frontend/front-home.html')
 
 
 def order_in_progress(request):

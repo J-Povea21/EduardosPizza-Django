@@ -1,0 +1,52 @@
+{% extends 'davur/elements/layouts/admin.html' %}
+
+{% load static %}
+
+{% block additional_css %}
+{% endblock %}
+
+
+{% block content %}
+
+
+     <div class="form-head d-flex mb-3 align-items-start">
+            <div class="me-auto d-none d-lg-block">
+                <h2 class="text-primary font-w600 mb-0">{{ title }}</h2>
+                <p class="mb-0">{{ description }}</p>
+            </div>
+
+            {%  block dropdown_1 %}
+
+            {% endblock %}
+
+            {% block dropdown_2 %}
+
+          {% endblock %}
+    </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="display mb-4 dataTable" style="min-width: 880px;">
+                        <tbody>
+                         <thead>
+                                <tr>
+                                    {% block table_headers  %}
+
+                                    {% endblock %}
+                                </tr>
+                          </thead>
+                        <tbody>
+                            {% block table_content %}
+
+                            {% endblock %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+
+{% block additional_js %}
+{% endblock %}
