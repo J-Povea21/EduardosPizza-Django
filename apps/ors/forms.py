@@ -1,32 +1,59 @@
 from django import forms
-from .models import Order, Customer, Pizza, Rating
+from django.core.exceptions import ValidationError
+
+from .models import Order, Customer, Pizza, Rating, Coupon, Ingredient
 
 
+#### form Validator ####
+
+def validate_coupon(value) -> float:
+    discount = 0
+    try:
+        coupon = Coupon.objects.get(code=value)
+        discount = coupon.discount
+    except Coupon.DoesNotExist:
+        raise ValidationError('El cupón ingresado no existe')
+    else:
+        if coupon.status == 'CANJEADO':
+            raise ValidationError('El cupón ingresado ya fue canjeado')
+        elif coupon.status == 'DISPONIBLE':
+            return discount
+
+
+#### Forms ####
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = '__all__'
 
         labels = {
-            'name': 'Escribe tu nombre',
-            'cedula': 'Escrite tu cédula',
-            'phone_number': 'Escrite tu teléfono',
-            'address': 'Indica tu dirección',
+            'name': 'Nombre completo*',
+            'cedula': 'Cédula*',
+            'address': 'Dirección de entrega*',
+            'phone_number': 'Número de teléfono*',
         }
 
 
+class CouponForm(forms.Form):
+    code = forms.CharField(
+        max_length=7,
+        min_length=7,
+        validators=[validate_coupon],
+        label='Código de cupón',
+        required=False,
+    )
+
+
 class OrderForm(forms.ModelForm):
-    coupon_code = forms.CharField(max_length=7, required=False)
+    coupon_code = CouponForm()
 
     class Meta:
         model = Order
 
-        exclude = ['discount', 'total_value',
-                   'domicile_price', 'date', 'customer', 'deliveryman',
-                   'destination']
+        fields = ['payment_method']
+
         labels = {
             'payment_method': 'Método de pago',
-            'coupon_code': 'Código de cupón (opcional)',
         }
 
 
@@ -34,7 +61,21 @@ class PizzaForm(forms.ModelForm):
     class Meta:
         model = Pizza
 
-        exclude = ['total_price', 'price_per_size', 'price_per_mass', 'order']
+        fields = ['size', 'mass_type', 'ingredients']
+
+        labels = {
+            'size': 'Tamaño',
+            'mass_type': 'Masa',
+            'ingredients': 'Ingredientes',
+        }
+
+        ingredients = forms.ModelMultipleChoiceField(
+            queryset=Ingredient.objects.all()
+        )
+
+        widgets = {
+            'ingredients': forms.CheckboxSelectMultiple(),
+        }
 
 
 class RatingForm(forms.ModelForm):

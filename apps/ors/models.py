@@ -1,7 +1,8 @@
 from django.db import models
 
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Avg, Sum
+from .validators import validate_phone_number, validate_cedula
+from django.db.models import Sum
 import random
 
 
@@ -16,11 +17,9 @@ class Ingredient(models.Model):
 
 class Person(models.Model):
     name = models.CharField(max_length=30, blank=False)
-    cedula = models.PositiveIntegerField(validators=[
-        MinValueValidator(1000000000),
-        MaxValueValidator(9999999999)],
-        help_text='La cédula debe contener 10 dígitos',
-        blank=False
+    cedula = models.PositiveIntegerField(
+        blank=False,
+        validators=[validate_cedula],
     )
 
     class Meta:
@@ -28,7 +27,12 @@ class Person(models.Model):
 
 
 class Customer(Person):
-    phone_number = models.CharField(max_length=10, blank=False)
+    phone_number = models.CharField(
+        max_length=10,
+        blank=False,
+        validators=[validate_phone_number]
+    )
+
     address = models.CharField(blank=False)
 
 
@@ -51,6 +55,14 @@ class Coupon(models.Model):
 
     status = models.CharField(max_length=11, choices=status_options)
 
+    def update_status_to_available(self):
+        self.status = 'DISPONIBLE'
+        self.save()
+
+    def update_status_to_redeemed(self):
+        self.status = 'CANJEADO'
+        self.save()
+
 
 class Rating(models.Model):
     order = models.OneToOneField('Order', on_delete=models.DO_NOTHING, related_name='rating',
@@ -65,7 +77,7 @@ class Rating(models.Model):
     )
     rating_value = models.PositiveIntegerField(choices=rating_values)
 
-    message = models.CharField(max_length=200, blank=True)
+    message = models.CharField(max_length=200, default='Sin mensaje', blank=True)
 
     def save(self, order=None, *args, **kwargs):
         self.order = order
@@ -104,8 +116,12 @@ class Order(models.Model):
 
     domicile_price = models.PositiveIntegerField(default=8000)
 
-    def save(self, customer=None, coupon_discount=None, *args, **kwargs):
-        self.discount = coupon_discount
+    def save(self, customer=None, coupon=None, *args, **kwargs):
+
+        if coupon:
+            self.discount = coupon.discount
+            coupon.update_status_to_redeemed()
+
         self.customer = customer
         self.deliveryman = random.choice(Deliveryman.objects.all())
         self.destination = self.customer.address

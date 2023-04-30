@@ -1,7 +1,6 @@
-from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm
-from .models import Order, Coupon, Rating
+from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm
+from .models import Order, Coupon
 
 
 # Create your views here.
@@ -16,29 +15,22 @@ def create_order(request, **kwargs):
         customer_form = CustomerForm(request.POST)
         order_form = OrderForm(request.POST)
         pizza_form = PizzaForm(request.POST)
-
-        # We check if the coupon code is valid
-        coupon_code = request.POST['coupon_code']
-        discount = 0
-        if coupon_code != '':
-            try:
-
-                coupon = Coupon.objects.get(code=coupon_code, status='DISPONIBLE')
-                discount = coupon.discount
-                coupon.status = 'CANJEADO'
-                coupon.save()
-            except Coupon.DoesNotExist:
-                messages.error(request, 'El cupón no existe o ya fue canjeado')
+        coupon_form = CouponForm(request.POST)
 
         forms_are_valid = customer_form.is_valid() & order_form.is_valid() \
-                          & pizza_form.is_valid()
+                          & pizza_form.is_valid() & coupon_form.is_valid()
 
         if forms_are_valid:
             # We save the customer first, then we link it to the order
             customer = customer_form.save()
             order = order_form.save(commit=False)
 
-            order.save(customer=customer, coupon_discount=discount)
+            # In case a coupon was given, we update his status and apply it to the order
+            coupon = None
+            if coupon_form.cleaned_data['code'] != '':
+                coupon = Coupon.objects.get(code=coupon_form.cleaned_data['code'])
+
+            order.save(customer=customer, coupon=coupon)
 
             # We save the pizza with the ingredients and link the order to it
             pizza = pizza_form.save(commit=False)
@@ -54,16 +46,17 @@ def create_order(request, **kwargs):
         customer_form = CustomerForm()
         order_form = OrderForm()
         pizza_form = PizzaForm()
+        coupon_form = CouponForm()
 
     return render(request, 'create_order.html', {
         'pizza_form': pizza_form,
         'customer_form': customer_form,
-        'order_form': order_form
+        'order_form': order_form,
+        'coupon_form': coupon_form
     })
 
 
 def order_in_progress(request):
-
     if request.method == "POST":
 
         # We get the latest order because we know is the one we are working on
