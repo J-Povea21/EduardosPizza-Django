@@ -1,0 +1,80 @@
+{% extends 'davur/elements/layouts/admin.html' %}
+{% load static %}
+
+
+{% block additional_css %}
+{% endblock %}
+
+
+{% block content %}
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back!</h4>
+                    <span>Light Gallery</span>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Advanced</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Light Gallery</a></li>
+                </ol>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Light Gallery</h4>
+                    </div>
+                    <div class="card-body pb-1">
+                        <div id="lightgallery" class="row">
+                            <a href="{% static 'davur/images/big/img1.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img1.jpg' %}" data-src="{% static 'davur/images/big/img1.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img1.jpg' %}" alt="" class="w-100"/>
+                            </a>
+                            <a href="{% static 'davur/images/big/img2.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img2.jpg' %}" data-src="{% static 'davur/images/big/img2.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img2.jpg' %}" alt="" class="w-100" />
+                            </a>
+                            <a href="{% static 'davur/images/big/img3.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img3.jpg' %}" data-src="{% static 'davur/images/big/img3.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img3.jpg' %}" alt="" class="w-100" />
+                            </a>
+                            <a href="{% static 'davur/images/big/img4.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img4.jpg' %}" data-src="{% static 'davur/images/big/img4.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img4.jpg' %}" alt="" class="w-100" />
+                            </a>
+                            <a href="{% static 'davur/images/big/img5.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img5.jpg' %}" data-src="{% static 'davur/images/big/img5.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img5.jpg' %}" alt="" class="w-100"/>
+                            </a>
+                            <a href="{% static 'davur/images/big/img6.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img6.jpg' %}" data-src="{% static 'davur/images/big/img6.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img6.jpg' %}" alt="" class="w-100" />
+                            </a>
+                            <a href="{% static 'davur/images/big/img7.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img7.jpg' %}" data-src="{% static 'davur/images/big/img7.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img7.jpg' %}" alt="" class="w-100" />
+                            </a>
+                            <a href="{% static 'davur/images/big/img8.jpg' %}" data-exthumbimage="{% static 'davur/images/big/img8.jpg' %}" data-src="{% static 'davur/images/big/img8.jpg' %}" class="col-lg-3 col-md-6 mb-4">
+                                <img src="{% static 'davur/images/big/img8.jpg' %}" alt="" class="w-100" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /# card -->
+            </div>
+        </div>
+{% endblock %}
+
+
+{% block additional_js %}
+<script>
+    $('#lightgallery').lightGallery({
+        loop:true,
+        thumbnail:true,
+        exThumbImage: 'data-exthumbimage'
+    });
+</script>
+{% endblock %}
+
+
+

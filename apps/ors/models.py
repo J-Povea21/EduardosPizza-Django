@@ -1,7 +1,8 @@
 from django.db import models
 
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Avg, Sum
+from .validators import validate_phone_number, validate_cedula
+from django.db.models import Sum
 import random
 
 
@@ -16,19 +17,25 @@ class Ingredient(models.Model):
 
 class Person(models.Model):
     name = models.CharField(max_length=30, blank=False)
-    cedula = models.PositiveIntegerField(validators=[
-        MinValueValidator(1000000000),
-        MaxValueValidator(9999999999)],
-        help_text='La cédula debe contener 10 dígitos',
-        blank=False
+    cedula = models.PositiveIntegerField(
+        blank=False,
+        validators=[validate_cedula],
     )
+
+    def __str__(self):
+        return f'{self.name}'
 
     class Meta:
         abstract = True
 
 
 class Customer(Person):
-    phone_number = models.CharField(max_length=10, blank=False)
+    phone_number = models.CharField(
+        max_length=10,
+        blank=False,
+        validators=[validate_phone_number]
+    )
+
     address = models.CharField(blank=False)
 
 
@@ -51,10 +58,18 @@ class Coupon(models.Model):
 
     status = models.CharField(max_length=11, choices=status_options)
 
+    def update_status_to_available(self):
+        self.status = 'DISPONIBLE'
+        self.save()
+
+    def update_status_to_redeemed(self):
+        self.status = 'CANJEADO'
+        self.save()
+
 
 class Rating(models.Model):
-    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    order = models.OneToOneField('Order', on_delete=models.DO_NOTHING, related_name='rating',
+                                 null=True)
 
     rating_values = (
         (1, '1'),
@@ -65,18 +80,27 @@ class Rating(models.Model):
     )
     rating_value = models.PositiveIntegerField(choices=rating_values)
 
-    def save(self, *args, **kwargs):
-        self.deliveryman.ratings_counter += 1
-        self.deliveryman.stars = Rating.objects \
-            .filter(deliveryman=self.deliveryman) \
-            .aggregate(Avg('stars'))['stars_avg']
-        self.deliveryman.save()
+    message = models.CharField(max_length=200, default='Sin mensaje', blank=True)
+
+    def save(self, order=None, *args, **kwargs):
+        self.order = order
         super(Rating, self).save(*args, **kwargs)
+
+        deliveryman = Deliveryman.objects.get(id=self.order.deliveryman.id)
+        total_ratings = deliveryman.ratings_counter + 1
+
+        current_stars = deliveryman.stars
+        new_average = current_stars + ((self.rating_value - current_stars) / total_ratings)
+        new_average = round(new_average, 2)
+
+        deliveryman.stars = new_average
+        deliveryman.ratings_counter = total_ratings
+        deliveryman.save()
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
-    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
+    deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT, related_name='deliveries')
 
     payment_methods = (
         ('EFECTIVO', 'Efectivo'),
@@ -95,9 +119,11 @@ class Order(models.Model):
 
     domicile_price = models.PositiveIntegerField(default=8000)
 
-    def save(self, customer=None, coupon_discount=None, *args, **kwargs):
+    def save(self, customer=None, coupon=None, *args, **kwargs):
+        if coupon:
+            self.discount = coupon.discount
+            coupon.update_status_to_redeemed()
 
-        self.discount = coupon_discount
         self.customer = customer
         self.deliveryman = random.choice(Deliveryman.objects.all())
         self.destination = self.customer.address
