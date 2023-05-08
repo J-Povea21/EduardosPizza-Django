@@ -88,3 +88,13 @@ class RatingForm(forms.ModelForm):
             'rating_value': 'Calificación',
             'message': 'Mensaje (opcional)',
         }
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = '__all__'
+
+        labels = {
+            'name': 'Nombre',
+            'price_per_pizza': 'Precio',
+        }
