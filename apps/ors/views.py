@@ -1,39 +1,46 @@
-from django.shortcuts import render, redirect
-from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm
-from .models import Order, Coupon, Ingredient, Rating
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm, IngredientForm
+from .models import Order, Coupon, Ingredient, Rating, Customer
 
 
 # Create your views here.
 
 def admin_panel(request):
-    orders = Order.objects.all()
-    title = 'Ordenes'
-    return render(request, 'davur/order_list.html',
-                  context={'orders': orders,
-                           'title': title
-                           }
-                  )
+    return render(request, 'davur/statistics.html')
+
 
 def statistics(request):
     return render(request, 'davur/statistics.html')
 
 
 def reviews(request):
-    reviews_list = Rating.objects.all()
-    title = 'Reseñas'
-    return render(request, 'davur/reviews.html',
-                  context={'reviews': reviews_list,
-                           'title': title,
-                           }
-    )
+
+    context = {
+        'review_list': Rating.objects.all(),
+        'title': 'Reseñas',
+    }
+
+    return render(request, 'davur/reviews.html',context= context)
 
 
 def order_list(request):
-    return render(request, 'davur/order_list.html')
+
+    context = {
+        'orders': Order.objects.all(),
+        'title': 'Órdenes',
+    }
+
+    return render(request, 'davur/order_list.html', context=context)
 
 
 def customers(request):
-    return render(request, 'davur/customers.html')
+
+    context = {
+        'customers': Customer.objects.all(),
+        'title': 'Clientes',
+    }
+
+    return render(request, 'davur/customers.html', context=context)
 
 
 def masses(request):
@@ -41,13 +48,32 @@ def masses(request):
 
 
 def ingredients(request):
-    return render(request, 'davur/ingredients.html', context=
-    {'ingredients': Ingredient.objects.all(), 'title': 'Ingredientes'}
-                  )
+
+    context = {
+        'ingredients': Ingredient.objects.all(),
+        'title': 'Ingredientes',
+    }
+
+    return render(request, 'davur/ingredients.html', context=context)
+
 
 
 def edit_ingredient(request, ingredient_id):
-    return redirect('ingredients')
+    ingredient = Ingredient.objects.get(pk=ingredient_id)
+    print('working')
+    if request.method == 'POST':
+        # Populate the ingredient form with the request data
+        form = IngredientForm(request.POST, instance=ingredient)
+        if form.is_valid():
+            # Save the changes to the database
+            form.save()
+            return redirect('ingredients')
+    else:
+        # Populate the ingredient form with the current data
+        form = IngredientForm(instance=ingredient)
+
+    # Render the template with the form
+    return render(request, 'davur/ingredients.html', {'form': form, 'ingredient': ingredient})
 
 
 def create_order(request, **kwargs):
