@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm
 from .models import Order, Coupon, Ingredient, Rating
 
@@ -82,7 +83,7 @@ def create_order(request, **kwargs):
             # And finally we update the total value of the order with the pizza
             order.calculate_total_value()
 
-            return redirect('order_in_progress')
+            return HttpResponse('You made an or der. In the future it will show a modal with the order details')
     else:
         customer_form = CustomerForm()
         order_form = OrderForm()
