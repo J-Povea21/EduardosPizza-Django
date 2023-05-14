@@ -13,3 +13,7 @@ def validate_cedula(value):
         raise ValidationError('La cédula debe contener al menos 10 dígitos')
     elif value > 9999999999:
         raise ValidationError('La cédula debe contener máximo 10 dígitos')
+
+def validate_price(value):
+    if value < 0:
+        raise ValidationError('El precio debe ser mayor a 0')

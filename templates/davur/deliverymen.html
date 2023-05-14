@@ -1,0 +1,30 @@
+{% extends 'davur/table/base-table-1.html' %}
+
+{% block additional_buttons %}
+ <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
+            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="addNewDeliveryman('{% url 'ors:create_deliveryman' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir repartidor</a></h2>
+ </div>
+{% endblock %}
+
+{% block table_headers %}
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Cedula</th>
+    <th>Estrellas</th>
+    <th>Nro. de calificaciones</th>
+{% endblock %}
+
+{% block table_content %}
+    {% for deliveryman in deliverymen %}
+
+        <tr>
+
+        <td>{{ deliveryman.id }}</td>
+        <td>{{ deliveryman.name }}</td>
+        <td>{{ deliveryman.cedula }}</td>
+        <td>{{ deliveryman.stars }}</td>
+        <td>{{ deliveryman.ratings_counter }}</td>
+
+        </tr>
+    {% endfor %}
+{% endblock %}

@@ -69,12 +69,8 @@ class PizzaForm(forms.ModelForm):
             'ingredients': 'Ingredientes',
         }
 
-        ingredients = forms.ModelMultipleChoiceField(
-            queryset=Ingredient.objects.all()
-        )
-
         widgets = {
-            'ingredients': forms.CheckboxSelectMultiple(),
+            'ingredients': forms.CheckboxSelectMultiple(choices=Ingredient.objects.exclude(available=False)),
         }
 
 
@@ -97,4 +93,10 @@ class IngredientForm(forms.ModelForm):
         labels = {
             'name': 'Nombre',
             'price_per_pizza': 'Precio',
+            'available': 'Disponible',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
+            'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 1}),
+            'available': forms.CheckboxInput(attrs={'class': 'orm-check custom-checkbox mb-3 checkbox-info check-lg'}),
         }

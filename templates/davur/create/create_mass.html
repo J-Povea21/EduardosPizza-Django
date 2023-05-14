@@ -1,0 +1,13 @@
+{% extends 'davur/elements/base_modal.html' %}
+
+{% block modal_title_block %}
+ <h5 class="modal-title">Añadiendo masa</h5>
+{% endblock %}
+
+{% block form_block %}
+    <form action="{% url 'ors:create_mass'%}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Añadir</button>
+    </form>
+{% endblock %}

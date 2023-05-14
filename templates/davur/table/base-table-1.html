@@ -10,15 +10,11 @@
 <div class="content-wrapper">
     <!-- row -->
     <div class="container-fluid">
-        <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
-            <h2 class="dashboard-title me-auto">{{ title }}<a  href="javascript:void(0);" data-toggle="modal" data-target="#AddNewCustomer" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Add New</a></h2>
             {% block additional_buttons %}
             {% endblock %}
-        </div>
-
         <div class="row">
             <div class="col-12">
-                <div class="table-responsive">
+                <div class="table-responsive dataTablesCard">
                     <table class="display dataTable" style="min-width: 845px;">
                         <thead>
                             <tr>
@@ -33,6 +29,17 @@
 
                         {% block table_content %}
                         {% endblock %}
+
+
+                              <div class="bootstrap-modal">
+                                 <div class="modal fade" id="modal">
+                                    <div class="modal-dialog">
+
+                                     </div>
+                                </div>
+
+                             </div>
+
 
                         </tbody>
                     </table>

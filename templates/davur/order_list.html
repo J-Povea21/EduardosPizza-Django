@@ -21,9 +21,10 @@
 
 {% block table_headers %}
 
-<th scope="col">id</th>
+<th scope="col">ID</th>
 <th scope="col">Cliente</th>
 <th scope="col">Método de pago</th>
+<th scope="col">Precio total</th>
 <th scope="col">Fecha</th>
 <th scope="col">Destino</th>
 <th scope="col">Repartidor</th>
@@ -36,6 +37,7 @@
             <td>{{ order.id }}</td>
             <td>{{ order.customer.name }}</td>
             <td>{{ order.payment_method }}</td>
+            <td>{{ order.total_value }}</td>
             <td>{{ order.date }}</td>
             <td>{{ order.destination }}</td>
             <td>{{ order.deliveryman.name }}</td>

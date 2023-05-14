@@ -1,0 +1,29 @@
+{% extends 'davur/table/base-table-1.html' %}
+
+
+{% block table_headers %}
+    <th>ID</th>
+    <th>Tamaño</th>
+    <th>Precio total</th>
+    <th>Tipo de masa</th>
+    <th>Precio por tamaño</th>
+    <th>Precio por masa</th>
+    <th>ID orden</th>
+{% endblock %}
+
+{% block table_content %}
+    {% for pizza in pizzas %}
+
+        <tr>
+
+        <td>{{ pizza.id }}</td>
+        <td>{{ pizza.size }}</td>
+        <td>{{ pizza.total_price }}</td>
+        <td>{{ pizza.mass_type }}</td>
+        <td>{{ pizza.price_per_mass }}</td>
+        <td>{{ pizza.price_per_size }}</td>
+        <td>{{ pizza.order.id }}</td>
+
+        </tr>
+    {% endfor %}
+{% endblock %}
