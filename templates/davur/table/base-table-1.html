@@ -52,4 +52,16 @@
 {% endblock %}
 
 {% block additional_js %}
+    <script>
+     var $ = jQuery.noConflict();
+
+        // Open update ingredient modal
+        function openModal(url) {
+            $('#modal').load(url, function () {
+                $(this).modal('show');
+            });
+        }
+
+</script>
+
 {% endblock %}

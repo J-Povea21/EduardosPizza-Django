@@ -34,7 +34,22 @@ class CustomerForm(forms.ModelForm):
         }
 
 
-class CouponForm(forms.Form):
+class CouponCreationForm(forms.ModelForm):
+    class Meta:
+        model = Coupon
+        fields = '__all__'
+
+        labels = {
+            'code': 'Código de cupón*',
+            'discount': 'Descuento*',
+        }
+
+        widgets = {
+            'code': forms.TextInput(attrs={'placeholder': 'Ej: DST1234', 'maxlength': 7, 'minlength': 7}),
+        }
+
+
+class CouponRedemptionForm(forms.Form):
     code = forms.CharField(
         max_length=7,
         min_length=7,
@@ -45,7 +60,7 @@ class CouponForm(forms.Form):
 
 
 class OrderForm(forms.ModelForm):
-    coupon_code = CouponForm()
+    coupon_code = CouponRedemptionForm()
 
     class Meta:
         model = Order
@@ -84,6 +99,7 @@ class RatingForm(forms.ModelForm):
             'rating_value': 'Calificación',
             'message': 'Mensaje (opcional)',
         }
+
 
 class IngredientForm(forms.ModelForm):
     class Meta:

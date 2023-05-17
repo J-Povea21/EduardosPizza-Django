@@ -1,7 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import UpdateView
-
-from .forms import OrderForm, CustomerForm, PizzaForm, RatingForm, CouponForm, IngredientForm
+from django.shortcuts import render, redirect
+from .forms import *
 from .models import *
 
 
@@ -137,7 +135,17 @@ def create_deliveryman(request):
 
 
 def create_coupon(request):
-    return render(request, 'davur/create/create_coupon.html')
+    if request.method == 'POST':
+        form = CouponCreationForm(request.POST)
+
+        if form.is_valid():
+            # Once we check the coupon is valid, we save it
+            form.save()
+            return redirect('ors:coupons')
+    else:
+        form = CouponCreationForm()
+
+    return render(request, 'davur/create/create_coupon.html', context={'form': form})
 
 
 def create_order(request, **kwargs):
@@ -146,7 +154,7 @@ def create_order(request, **kwargs):
         customer_form = CustomerForm(request.POST)
         order_form = OrderForm(request.POST)
         pizza_form = PizzaForm(request.POST)
-        coupon_form = CouponForm(request.POST)
+        coupon_form = CouponRedemptionForm(request.POST)
 
         forms_are_valid = customer_form.is_valid() & order_form.is_valid() \
                           & pizza_form.is_valid() & coupon_form.is_valid()
@@ -177,7 +185,7 @@ def create_order(request, **kwargs):
         customer_form = CustomerForm()
         order_form = OrderForm()
         pizza_form = PizzaForm()
-        coupon_form = CouponForm()
+        coupon_form = CouponRedemptionForm()
 
     return render(request, 'create_order.html', {
         'pizza_form': pizza_form,
