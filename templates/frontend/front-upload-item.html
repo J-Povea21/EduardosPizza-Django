@@ -1,0 +1,154 @@
+{% extends 'frontend/elements/layouts/base.html' %}
+
+{% load static %}
+
+{% block additional_css %}
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-2 col-md-3">
+                <a href="{% url 'frontend:front-food-items' %}" class="back-btn d-block mb-5"><i class="fa fa-arrow-left"></i>Back</a>
+                <div class="row">
+                    <div class="col-md-12 col-6">
+                        <div class="upload-item-box">
+                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                            <label for="imageUpload">
+                                <div id="imagePreview"></div>
+                                <div class="content">
+                                    <i class="fas fa-images"></i>
+                                    <span>Upload <br> items image</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-6">
+                        <div class="upload-video-box">
+                            <input type='file' id="videoUpload" accept=".png, .jpg, .jpeg" />
+                            <label for="videoUpload">
+                                <div id="videoPreview"></div>
+                                <div class="content">
+                                    <i class="fas fa-video"></i>
+                                    <span>Upload <br> items Video</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-10 col-md-9">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-7 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Upload an items</h4>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group mb-3 pb-3">
+                                        <label class="font-w600">Item Name</label>
+                                        <input type="text" class="form-control solid" value="Cheese burger">
+                                    </div>
+                                    <div class="form-group mb-3 pb-3">
+                                        <label class="font-w600">Item Code</label>
+                                        <input type="text" class="form-control solid" value="Cheese burger">
+                                    </div>
+                                    <div class="form-group mb-3 pb-3">
+                                        <label class="font-w600">Item Price (In $)</label>
+                                        <input type="text" class="form-control solid" value="9896">
+                                    </div>
+                                    <div class="form-group mb-3 pb-3">
+                                        <label class="font-w600">Choose Items Category</label>
+                                        <select class="form-control default-select solid">
+                                            <option>Fast Foot</option>
+                                            <option>Dinner Foot</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3 pb-3">
+                                        <label class="font-w600">Item description</label>
+                                        <textarea rows="5" class="form-control solid"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-w600">Mutiple select list</label>
+                                        <select multiple class="form-control default-select solid" id="sel2">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-6">
+                        <div class="card h-auto">
+                            <div class="card-header">
+                                <h4 class="card-title">Add Add-ons</h4>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="loadmore-content" id="uploadItemContent">
+                                        <div class="row">
+                                            <div class="col-xl-7">
+                                                <div class="form-group mb-3 pb-3">
+                                                    <label class="font-w600">Add-ons</label>
+                                                    <input type="text" class="form-control solid" value="Extra masala">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-5">
+                                                <div class="form-group mb-3 pb-3">
+                                                    <label class="font-w600">Price (In $)</label>
+                                                    <input type="text" class="form-control solid" value="22">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="javascript:void(0);" class="btn btn-primary dz-load-more rounded light"  id="uploadItem" rel="ajax/upload-item.html">+Add More</a>
+                                </form>
+                                <hr>
+                                <div class="d-flex align-items-center">
+                                    <h4 class="me-auto">Item in stock</h4>
+                                    <div class="custom-control custom-switch toggle-switch text-start me-3 mb-2 form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="javascript:void(0);" class="btn btn-primary btn-block rounded">Upload Items</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+
+<script>
+	(function($) {
+	 
+		var table = $('#example5').DataTable({
+			searching: false,
+			paging:true,
+			select: false,
+			//info: false,         
+			lengthChange:false 
+			
+		});
+		$('#example tbody').on('click', 'tr', function () {
+			var data = table.row( this ).data();
+			
+		});
+	   
+	})(jQuery);
+	</script>
+{% endblock %}
