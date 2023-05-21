@@ -1,29 +1,47 @@
 from django.db import models
 
 from django.core.validators import MaxValueValidator, MinValueValidator
-from .validators import validate_phone_number, validate_cedula
+from .validators import *
 from django.db.models import Sum
 import random
 
 
 # Create your models here.
-class Ingredient(models.Model):
+
+class Product(models.Model):
+
     name = models.CharField(max_length=30)
-    price_per_pizza = models.FloatField()
+    price_per_pizza = models.FloatField(validators=[validate_price])
+    available = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return f'{self.name}'
 
 
+class Ingredient(Product):
+    pass
+
+
+class Mass(Product):
+    pass
+
+
 class Person(models.Model):
+
     name = models.CharField(max_length=30, blank=False)
     cedula = models.PositiveIntegerField(
         blank=False,
         validators=[validate_cedula],
+        unique=True
     )
 
     def __str__(self):
         return f'{self.name}'
+
+
 
     class Meta:
         abstract = True
@@ -42,6 +60,7 @@ class Customer(Person):
 class Deliveryman(Person):
     stars = models.FloatField(default=0)
     ratings_counter = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
 
 
 class Coupon(models.Model):
@@ -125,7 +144,7 @@ class Order(models.Model):
             coupon.update_status_to_redeemed()
 
         self.customer = customer
-        self.deliveryman = random.choice(Deliveryman.objects.all())
+        self.deliveryman = random.choice(Deliveryman.objects.filter(active=True))
         self.destination = self.customer.address
         super(Order, self).save(*args, **kwargs)
 
@@ -166,13 +185,7 @@ class Pizza(models.Model):
 
     size = models.CharField(max_length=2, choices=size_types)
 
-    mass_types = (
-        ('NORMAL', 'Normal'),
-        ('INTEGRAL', 'Integral'),
-        ('EDUARDOS CHEESE', 'Eduardos Cheese')
-    )
-
-    mass_type = models.CharField(max_length=15, choices=mass_types)
+    mass_type = models.ForeignKey(Mass, on_delete=models.DO_NOTHING)
 
     price_per_size = models.FloatField(default=0)
 
@@ -184,7 +197,7 @@ class Pizza(models.Model):
 
     def save(self, order=None, ingredients=None,
              *args, **kwargs):
-        self.price_per_mass = self.values_dict['mass'][self.mass_type]
+        self.price_per_mass = self.mass_type.price_per_pizza
         self.price_per_size = self.values_dict['size'][self.size]
         self.order = order
 
