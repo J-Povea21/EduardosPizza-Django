@@ -24,7 +24,7 @@
 
 {% block table_content %}
 
-    {% for order in orders %}
+    {% for order in object_list %}
         <tr>
             <td>{{ order.id }}</td>
             <td>{{ order.customer.name }}</td>

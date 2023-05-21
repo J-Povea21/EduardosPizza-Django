@@ -12,10 +12,11 @@
     <th>Cedula</th>
     <th>Estrellas</th>
     <th>Nro. de calificaciones</th>
+    <th>Activo</th>
 {% endblock %}
 
 {% block table_content %}
-    {% for deliveryman in deliverymen %}
+    {% for deliveryman in object_list %}
 
         <tr>
 
@@ -24,6 +25,7 @@
         <td>{{ deliveryman.cedula }}</td>
         <td>{{ deliveryman.stars }}</td>
         <td>{{ deliveryman.ratings_counter }}</td>
+        <td>{{ deliveryman.active }}</td>
          <td>
             <div class="action-buttons d-flex justify-content-end">
                <a onclick="openModal('{% url 'ors:edit_deliveryman' deliveryman.id  %}')" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">

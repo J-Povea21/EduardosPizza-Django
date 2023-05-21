@@ -7,28 +7,38 @@
 {% endblock %}
 
 {% block table_headers %}
-    <th>ID</th>
+    <th>ID orden</th>
     <th>Tamaño</th>
     <th>Precio total</th>
     <th>Tipo de masa</th>
-    <th>Precio por tamaño</th>
     <th>Precio por masa</th>
-    <th>ID orden</th>
+    <th>Precio por tamaño</th>
+    <th>Ingredientes</th>
 {% endblock %}
 
 {% block table_content %}
-    {% for pizza in pizzas %}
+    {% for pizza in object_list %}
 
         <tr>
 
-        <td>{{ pizza.id }}</td>
+        <td>{{ pizza.order.id }}</td>
         <td>{{ pizza.size }}</td>
         <td>{{ pizza.total_price }}</td>
         <td>{{ pizza.mass_type }}</td>
         <td>{{ pizza.price_per_mass }}</td>
         <td>{{ pizza.price_per_size }}</td>
-        <td>{{ pizza.order.id }}</td>
-
+        <td>
+           <!-- Show in a dropdown the ingredients -->
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton{{ pizza.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                    Ingredientes
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ pizza.id }}">
+                    {% for ingredient in pizza.ingredients.all %}
+                        <li><a class="dropdown-item" href="#">{{ ingredient.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </tr>
     {% endfor %}
 {% endblock %}

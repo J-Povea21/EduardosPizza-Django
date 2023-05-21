@@ -37,7 +37,7 @@ class CustomerForm(forms.ModelForm):
 class DeliverymanCreationForm(forms.ModelForm):
     class Meta:
         model = Deliveryman
-        fields = ['name', 'cedula']
+        fields = ['name', 'cedula', 'active']
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control input-rounded ',
@@ -47,6 +47,7 @@ class DeliverymanCreationForm(forms.ModelForm):
                                            }),
 
             'cedula': forms.NumberInput(attrs={'class': 'form-control input-rounded '}),
+            'active': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
         }
 
 
@@ -56,7 +57,14 @@ class CouponCreationForm(forms.ModelForm):
         fields = '__all__'
 
         widgets = {
-            'code': forms.TextInput(attrs={'placeholder': 'Ej: DST1234', 'maxlength': 7, 'minlength': 7}),
+            'code': forms.TextInput(attrs={'class': 'form-control input-rounded ',
+                                           'placeholder': 'Ej: DST1234',
+                                           'maxlength': 7,
+                                           'minlength': 7}),
+            'discount': forms.NumberInput(attrs={'class': 'form-control input-rounded ',
+                                                 'min': 0.1,
+                                                 'max': 0.3,}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -84,21 +92,25 @@ class OrderForm(forms.ModelForm):
 
 
 class PizzaForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PizzaForm, self).__init__(*args, **kwargs)
+
+        # Update the widget choices based on the current availability of ingredients and mass types
+        self.fields['ingredients'].widget.choices = Ingredient.objects.filter(available=True).values_list('id', 'name')
+        self.fields['mass_type'].widget.choices = Mass.objects.filter(available=True).values_list('id', 'name')
+
     class Meta:
         model = Pizza
-
         fields = ['size', 'mass_type', 'ingredients']
-
         labels = {
             'size': 'Tamaño',
             'mass_type': 'Masa',
             'ingredients': 'Ingredientes',
         }
-
         widgets = {
-            'ingredients': forms.CheckboxSelectMultiple(choices=Ingredient.objects.exclude(available=False)),
+            'ingredients': forms.CheckboxSelectMultiple,
+            'mass_type': forms.Select,
         }
-
 
 class RatingForm(forms.ModelForm):
     class Meta:
@@ -123,10 +135,11 @@ class IngredientForm(forms.ModelForm):
             'available': 'Disponible',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
+            'name': forms.TextInput(attrs={'class': 'form-control input-rounded ', 'maxlength': 30, 'minlength': 2}),
             'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 1}),
             'available': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
         }
+
 
 class MassForm(forms.ModelForm):
     class Meta:
@@ -140,6 +153,6 @@ class MassForm(forms.ModelForm):
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
-            'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 1}),
+            'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 0}),
             'available': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
         }

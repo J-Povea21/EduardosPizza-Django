@@ -60,6 +60,7 @@ class Customer(Person):
 class Deliveryman(Person):
     stars = models.FloatField(default=0)
     ratings_counter = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
 
 
 class Coupon(models.Model):
@@ -143,7 +144,7 @@ class Order(models.Model):
             coupon.update_status_to_redeemed()
 
         self.customer = customer
-        self.deliveryman = random.choice(Deliveryman.objects.all())
+        self.deliveryman = random.choice(Deliveryman.objects.filter(active=True))
         self.destination = self.customer.address
         super(Order, self).save(*args, **kwargs)
 

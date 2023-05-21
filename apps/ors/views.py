@@ -1,91 +1,76 @@
-from django.db import IntegrityError
 from django.http import JsonResponse
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 
 
-# Create your views here.
-
 ## General information of the bussiness ##
 def admin_panel(request):
-    return render(request, 'davur/statistics.html')
-
-
-def statistics(request):
-    return render(request, 'davur/statistics.html')
-
-
-def reviews(request):
+    # In the context we will have the total amount of money earned, the total amount of orders, the total amount of
+    # customers and the total amount of deliverymen
     context = {
-        'review_list': Rating.objects.all(),
-        'title': 'Reseñas',
+        'incomes': Order.objects.aggregate(Sum('total_value'))['total_value__sum'],
+        'orders': Order.objects.count(),
+        'customers': Customer.objects.count(),
+        'deliverymen': Deliveryman.objects.count(),
     }
-
-    return render(request, 'davur/reviews.html', context=context)
-
-
-def order_list(request):
-    context = {
-        'orders': Order.objects.all(),
-        'title': 'Órdenes',
-    }
-
-    return render(request, 'davur/order_list.html', context=context)
+    return render(request, 'davur/statistics.html', context=context)
 
 
-def pizzas(request):
-    context = {
-        'pizzas': Pizza.objects.all(),
-        'title': 'Pizzas',
-    }
-
-    return render(request, 'davur/pizzas.html', context=context)
+class BaseListView(ListView):
+    def get_context_data(self, **kwargs):
+        context = super(BaseListView, self).get_context_data(**kwargs)
+        context['title'] = self.title
+        return context
 
 
-def customers(request):
-    context = {
-        'customers': Customer.objects.all(),
-        'title': 'Clientes',
-    }
-
-    return render(request, 'davur/customers.html', context=context)
+class ReviewListView(BaseListView):
+    model = Rating
+    template_name = 'davur/reviews.html'
+    title = 'Reseñas'
 
 
-def deliverymen(request):
-    context = {
-        'deliverymen': Deliveryman.objects.all(),
-        'title': 'Repartidores',
-    }
-    return render(request, 'davur/deliverymen.html', context=context)
+class OrderListView(BaseListView):
+    model = Order
+    template_name = 'davur/order_list.html'
+    title = 'Órdenes'
 
 
-def coupons(request):
-    context = {
-        'coupons': Coupon.objects.all().order_by('id'),
-        'title': 'Cupones',
-    }
-
-    return render(request, 'davur/coupons.html', context=context)
+class PizzaListView(BaseListView):
+    model = Pizza
+    template_name = 'davur/pizzas.html'
+    title = 'Pizzas'
 
 
-## Products of the bussiness ##
-
-def masses(request):
-    context = {
-        'masses': Mass.objects.all(),
-        'title': 'Masas',
-    }
-    return render(request, 'davur/masses.html', context=context)
+class CustomerListView(BaseListView):
+    model = Customer
+    template_name = 'davur/customers.html'
+    title = 'Clientes'
 
 
-def ingredients(request):
-    context = {
-        'ingredients': Ingredient.objects.all().order_by('id'),
-        'title': 'Ingredientes',
-    }
+class DeliverymanListView(BaseListView):
+    model = Deliveryman
+    template_name = 'davur/deliverymen.html'
+    title = 'Repartidores'
 
-    return render(request, 'davur/ingredients.html', context=context)
+
+class CouponListView(BaseListView):
+    model = Coupon
+    template_name = 'davur/coupons.html'
+    title = 'Cupones'
+
+
+class MassListView(BaseListView):
+    model = Mass
+    template_name = 'davur/masses.html'
+    title = 'Masa'
+
+
+class IngredientListView(BaseListView):
+    model = Ingredient
+    template_name = 'davur/ingredients.html'
+    title = 'Ingredientes'
 
 
 ## CRUD of the products ##
@@ -144,10 +129,10 @@ def edit_mass(request, mass_id):
         if form.is_valid():
             # Update the mass with the new data
             mass.name = form.cleaned_data['name']
-            mass.price = form.cleaned_data['price']
+            mass.price_per_pizza = form.cleaned_data['price_per_pizza']
             mass.available = form.cleaned_data['available']
 
-            mass.save(update_fields=['name', 'price', 'available'])
+            mass.save(update_fields=['name', 'price_per_pizza', 'available'])
             return redirect('ors:masses')
     else:
         # Populate the mass form with the current data
@@ -181,8 +166,9 @@ def edit_deliveryman(request, deliveryman_id):
         if form.is_valid():
             deliveryman.name = form.cleaned_data['name']
             deliveryman.cedula = form.cleaned_data['cedula']
+            deliveryman.active = form.cleaned_data['active']
 
-            deliveryman.save(update_fields=['name', 'cedula'])
+            deliveryman.save(update_fields=['name', 'cedula', 'active'])
             return JsonResponse({'exists': False})  # Cedula is valid
         else:
             return JsonResponse({'exists': True, 'errors': form.errors})  # Cedula already exists
@@ -279,7 +265,3 @@ def create_order(request, **kwargs):
         'order_form': order_form,
         'coupon_form': coupon_form
     })
-
-
-def test(request):
-    return render(request, 'frontend/front-home.html')

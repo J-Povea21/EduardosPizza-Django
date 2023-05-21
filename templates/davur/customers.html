@@ -2,7 +2,7 @@
 
 {% block additional_buttons %}
  <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
-            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="addNewCoupon('{% url 'ors:create_coupon' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir cliente</a></h2>
+            <h2 class="dashboard-title me-auto">{{ title }}</h2>
  </div>
 {% endblock %}
 
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block table_content %}
-    {% for customer in customers %}
+    {% for customer in object_list %}
 
         <tr>
 
