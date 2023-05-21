@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
@@ -60,7 +62,7 @@ def deliverymen(request):
 
 def coupons(request):
     context = {
-        'coupons': Coupon.objects.all(),
+        'coupons': Coupon.objects.all().order_by('id'),
         'title': 'Cupones',
     }
 
@@ -123,15 +125,71 @@ def edit_ingredient(request, ingredient_id):
 
 
 def create_mass(request):
-    return render(request, 'davur/create/create_mass.html')
+    if request.method == 'POST':
+        form = MassForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('ors:masses')
+    else:
+        form = MassForm()
+    return render(request, 'davur/create/create_mass.html', {'form': form})
 
 
 def edit_mass(request, mass_id):
-    pass
+    mass = Mass.objects.get(pk=mass_id)
+    if request.method == 'POST':
+        form = MassForm(request.POST, instance=mass)
+
+        if form.is_valid():
+            # Update the mass with the new data
+            mass.name = form.cleaned_data['name']
+            mass.price = form.cleaned_data['price']
+            mass.available = form.cleaned_data['available']
+
+            mass.save(update_fields=['name', 'price', 'available'])
+            return redirect('ors:masses')
+    else:
+        # Populate the mass form with the current data
+        form = MassForm(instance=mass)
+
+    return render(request, 'davur/update/edit_mass.html', {'form': form, 'mass': mass})
 
 
 def create_deliveryman(request):
-    return render(request, 'davur/create/create_deliveryman.html')
+    if request.method == 'POST':
+        form = DeliverymanCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'exists': False})  # Cedula is valid
+        else:
+            return JsonResponse({'exists': True, 'errors': form.errors})  # Cedula already exists
+    else:
+        form = DeliverymanCreationForm()
+
+    return render(request, 'davur/create/create_deliveryman.html', context={'form': form})
+
+
+def edit_deliveryman(request, deliveryman_id):
+    # We get the deliveryman with the given id
+    deliveryman = Deliveryman.objects.get(pk=deliveryman_id)
+
+    if request.method == 'POST':
+        form = DeliverymanCreationForm(request.POST, instance=deliveryman)
+
+        if form.is_valid():
+            deliveryman.name = form.cleaned_data['name']
+            deliveryman.cedula = form.cleaned_data['cedula']
+
+            deliveryman.save(update_fields=['name', 'cedula'])
+            return JsonResponse({'exists': False})  # Cedula is valid
+        else:
+            return JsonResponse({'exists': True, 'errors': form.errors})  # Cedula already exists
+    else:
+        form = DeliverymanCreationForm(instance=deliveryman)
+
+    return render(request, 'davur/update/edit_deliveryman.html', {'form': form, 'deliveryman': deliveryman})
 
 
 def create_coupon(request):
@@ -139,13 +197,41 @@ def create_coupon(request):
         form = CouponCreationForm(request.POST)
 
         if form.is_valid():
-            # Once we check the coupon is valid, we save it
-            form.save()
-            return redirect('ors:coupons')
+
+            coupon_already_exists = Coupon.objects.filter(code=form.cleaned_data['code']) \
+                .exists()
+
+            if coupon_already_exists:
+                return JsonResponse({'exists': True})  # Coupon code already exists
+            else:
+                # Once we check the coupon is valid, we save it
+                form.save()
+                return JsonResponse({'exists': False})  # Coupon code is valid
     else:
         form = CouponCreationForm()
 
     return render(request, 'davur/create/create_coupon.html', context={'form': form})
+
+
+def edit_coupon(request, coupon_id):
+    coupon = Coupon.objects.get(pk=coupon_id)
+    if request.method == 'POST':
+        form = CouponCreationForm(request.POST, instance=coupon)
+
+        if form.is_valid():
+            # Update the coupon with the new data
+            coupon.code = form.cleaned_data['code']
+            coupon.discount = form.cleaned_data['discount']
+            coupon.status = form.cleaned_data['status']
+
+            coupon.save(update_fields=['code', 'discount', 'status'])
+            return redirect('ors:coupons')
+    else:
+        # Populate the coupon form with the current data
+        form = CouponCreationForm(instance=coupon)
+
+    # Render the template with the form
+    return render(request, 'davur/update/edit_coupon.html', {'form': form, 'coupon': coupon})
 
 
 def create_order(request, **kwargs):
@@ -180,7 +266,7 @@ def create_order(request, **kwargs):
             # And finally we update the total value of the order with the pizza
             order.calculate_total_value()
 
-            return redirect('order_in_progress')
+            return redirect('webapp:index')
     else:
         customer_form = CustomerForm()
         order_form = OrderForm()
@@ -197,19 +283,3 @@ def create_order(request, **kwargs):
 
 def test(request):
     return render(request, 'frontend/front-home.html')
-
-
-def order_in_progress(request):
-    if request.method == "POST":
-
-        # We get the latest order because we know is the one we are working on
-        order = Order.objects.latest('id')
-        rating_form = RatingForm(request.POST)
-
-        if rating_form.is_valid():
-            rating = rating_form.save(commit=False)
-            rating.save(order=order)
-            return redirect('create_order')
-    else:
-        rating_form = RatingForm()
-    return render(request, 'order_in_progress.html', {'rating_form': rating_form})

@@ -30,14 +30,18 @@ class Mass(Product):
 
 
 class Person(models.Model):
+
     name = models.CharField(max_length=30, blank=False)
     cedula = models.PositiveIntegerField(
         blank=False,
         validators=[validate_cedula],
+        unique=True
     )
 
     def __str__(self):
         return f'{self.name}'
+
+
 
     class Meta:
         abstract = True

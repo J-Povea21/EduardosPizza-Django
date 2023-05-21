@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Order, Customer, Pizza, Rating, Coupon, Ingredient
+from .models import *
 
 
 #### form Validator ####
@@ -34,15 +34,26 @@ class CustomerForm(forms.ModelForm):
         }
 
 
+class DeliverymanCreationForm(forms.ModelForm):
+    class Meta:
+        model = Deliveryman
+        fields = ['name', 'cedula']
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control input-rounded ',
+                                           'placeholder': 'Ej: Eduardo Angulo',
+                                           'maxlength': 30,
+                                           'minlength': 2,
+                                           }),
+
+            'cedula': forms.NumberInput(attrs={'class': 'form-control input-rounded '}),
+        }
+
+
 class CouponCreationForm(forms.ModelForm):
     class Meta:
         model = Coupon
         fields = '__all__'
-
-        labels = {
-            'code': 'Código de cupón*',
-            'discount': 'Descuento*',
-        }
 
         widgets = {
             'code': forms.TextInput(attrs={'placeholder': 'Ej: DST1234', 'maxlength': 7, 'minlength': 7}),
@@ -114,5 +125,21 @@ class IngredientForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
             'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 1}),
-            'available': forms.CheckboxInput(attrs={'class': 'orm-check custom-checkbox mb-3 checkbox-info check-lg'}),
+            'available': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
+        }
+
+class MassForm(forms.ModelForm):
+    class Meta:
+        model = Mass
+        fields = '__all__'
+
+        labels = {
+            'name': 'Nombre',
+            'price_per_pizza': 'Precio',
+            'available': 'Disponible',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
+            'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 1}),
+            'available': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
         }

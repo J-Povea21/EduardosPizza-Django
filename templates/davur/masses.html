@@ -2,7 +2,7 @@
 
 {% block additional_buttons %}
  <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
-            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="addNewMass('{% url 'ors:create_mass' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir masa</a></h2>
+            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="openModal('{% url 'ors:create_mass' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir masa</a></h2>
  </div>
 {% endblock %}
 
@@ -25,7 +25,7 @@
         <td>{{ mass.available }}</td>
         <td>
             <div class="action-buttons d-flex justify-content-end">
-               <a href="{% url 'ors:edit_ingredient' mass.id  %}" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
+               <a onclick="openModal('{% url 'ors:edit_mass' mass.id  %}')" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <rect x="0" y="0" width="24" height="24"/>

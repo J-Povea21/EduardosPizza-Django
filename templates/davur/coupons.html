@@ -24,7 +24,7 @@
         <td>{{ coupon.status }}</td>
         <td>
             <div class="action-buttons d-flex justify-content-end">
-               <a href="{% url 'ors:edit_ingredient' coupon.id  %}" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
+               <a onclick="openModal('{% url 'ors:edit_coupon' coupon.id  %}')" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <rect x="0" y="0" width="24" height="24"/>
@@ -35,34 +35,6 @@
 
                </a>
             </div>
-
-            <!-- Modal -->
-             <div class="modal fade" id="updateIngredientModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">{{ ingredient.name }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post">
-                                                {% csrf_token %}
-                                                {{ form.as_p }}
-
-                                            </form>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
         </td>
         </tr>
     {% endfor %}

@@ -5,7 +5,7 @@
 {% endblock modal_title_block %}
 
 {% block form_block %}
-<form method="POST" action="{% url 'ors:create_deliveryman'%}">
+<form id="deliveryman-form" method="POST" action="{% url 'ors:create_deliveryman'%}">
     <div class="modal-body">
         <div class="basic-form">
 
@@ -15,17 +15,19 @@
             {{ form.name }}
 
             <br>
-            <label class ="form-label" for="price_per_pizza">Cédula</label>
+            <label class ="form-label" for="cedula">Cédula</label>
             {{ form.cedula }}
 
             <br>
-            <label class="form-label" for="available">Estrellas</label>
-            {{ form.status }}
-
-            <label class="form-label" for="available">Nro. Calificaciones</label>
-            {{ form.ratings_count }}
 
             <div class="modal-footer">
+
+                <div id="error-message">
+                    {% if error_message %}
+                        {{ error_message }}
+                    {% endif %}
+                </div>
+
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>
                 <button type="submit" class="btn btn-primary">Añadir</button>
             </div>
@@ -33,3 +35,40 @@
     </div>
 </form>
 {% endblock form_block %}
+
+{% block additionalAjax %}
+     <script>
+        $(document).ready(function() {
+      $('#deliveryman-form').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var form = $(this);
+        var formData = form.serialize(); // Serialize the form data
+
+        // Send the AJAX request to check if cedula is valid
+        $.ajax({
+          url: form.attr('action'),
+          type: form.attr('method'),
+          data: formData,
+          success: function(response) {
+            // Check if coupon code is available
+            if (response.exists) {
+              // Show an error message in the modal
+              $('#error-message').text(response.errors.cedula[0]);
+            } else {
+              // Submit the form if coupon code is valid
+              window.location.href = 'deliverymen';
+            }
+          },
+          error: function(xhr, status, error) {
+            // Handle error if the AJAX request fails
+            console.error(xhr.responseText);
+          }
+        });
+      });
+    });
+    </script>
+
+{% endblock additionalAjax %}
+
+
