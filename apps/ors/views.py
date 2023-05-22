@@ -1,3 +1,7 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login, logout
 from django.http import JsonResponse
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
@@ -5,7 +9,38 @@ from .forms import *
 from .models import *
 
 
+def login_user(request):
+    # Here we will validate the login form
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            user = form.login(request)
+            if user:
+                # If the user exists, we will try to log in the user
+                login(request, user)
+                return redirect('ors:admin_panel')
+            else:
+                messages.warning(request, 'El usuario no existe')
+                return render(request, 'davur/modules/login.html', {'form': form})
+        else:
+            # If the user doesn't exist, we will show an error message
+            messages.warning(request, 'Usuario o contraseña incorrectos')
+            return render(request, 'davur/modules/login.html', {'form': form})
+    else:
+        form = LoginForm()
+
+    return render(request, 'davur/modules/login.html', {'form': form})
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'Sesión cerrada correctamente')
+    return redirect('ors:login')
+
+
 ## General information of the bussiness ##
+@login_required(login_url='ors:login')
 def admin_panel(request):
     # In the context we will have the total amount of money earned, the total amount of orders, the total amount of
     # customers and the total amount of deliverymen
@@ -18,7 +53,11 @@ def admin_panel(request):
     return render(request, 'davur/statistics.html', context=context)
 
 
-class BaseListView(ListView):
+# Here we use the LoginRequiredMixin to achieve the same result as the @login_required decorator
+# Thanks to the fact that a lot of views require the user to be logged in, we can use this class to avoid repeating
+class BaseListView(LoginRequiredMixin, ListView):
+    login_url = 'ors:login'
+
     def get_context_data(self, **kwargs):
         context = super(BaseListView, self).get_context_data(**kwargs)
         context['title'] = self.title
@@ -218,50 +257,3 @@ def edit_coupon(request, coupon_id):
 
     # Render the template with the form
     return render(request, 'davur/update/edit_coupon.html', {'form': form, 'coupon': coupon})
-
-
-def create_order(request, **kwargs):
-    if request.method == "POST":
-
-        customer_form = CustomerForm(request.POST)
-        order_form = OrderForm(request.POST)
-        pizza_form = PizzaForm(request.POST)
-        coupon_form = CouponRedemptionForm(request.POST)
-
-        forms_are_valid = customer_form.is_valid() & order_form.is_valid() \
-                          & pizza_form.is_valid() & coupon_form.is_valid()
-
-        if forms_are_valid:
-            # We save the customer first, then we link it to the order
-            customer = customer_form.save()
-            order = order_form.save(commit=False)
-
-            # In case a coupon was given, we update his status and apply it to the order
-            coupon = None
-            if coupon_form.cleaned_data['code'] != '':
-                coupon = Coupon.objects.get(code=coupon_form.cleaned_data['code'])
-
-            order.save(customer=customer, coupon=coupon)
-
-            # We save the pizza with the ingredients and link the order to it
-            pizza = pizza_form.save(commit=False)
-            ingredients = pizza_form.cleaned_data['ingredients']
-
-            pizza.save(order=order, ingredients=ingredients)
-
-            # And finally we update the total value of the order with the pizza
-            order.calculate_total_value()
-
-            return redirect('webapp:index')
-    else:
-        customer_form = CustomerForm()
-        order_form = OrderForm()
-        pizza_form = PizzaForm()
-        coupon_form = CouponRedemptionForm()
-
-    return render(request, 'create_order.html', {
-        'pizza_form': pizza_form,
-        'customer_form': customer_form,
-        'order_form': order_form,
-        'coupon_form': coupon_form
-    })
