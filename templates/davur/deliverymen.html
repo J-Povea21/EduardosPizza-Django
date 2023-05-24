@@ -2,30 +2,33 @@
 
 {% block additional_buttons %}
  <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
-            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="openModal('{% url 'ors:create_ingredient' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir ingrediente</a></h2>
+            <h2 class="dashboard-title me-auto">{{ title }}<a  onclick="openModal('{% url 'ors:create_deliveryman' %}')" data-toggle="modal" data-target="#AddNewModal" class="btn btn-success btn-rounded ms-4 text-white d-inline-block">Añadir repartidor</a></h2>
  </div>
 {% endblock %}
-
 
 {% block table_headers %}
     <th>ID</th>
     <th>Nombre</th>
-    <th>Precio por pizza</th>
-    <th>Disponible</th>
+    <th>Cedula</th>
+    <th>Estrellas</th>
+    <th>Nro. de calificaciones</th>
+    <th>Activo</th>
 {% endblock %}
 
 {% block table_content %}
-    {% for ingredient in object_list %}
+    {% for deliveryman in object_list %}
 
         <tr>
 
-        <td>{{ ingredient.id }}</td>
-        <td>{{ ingredient.name }}</td>
-        <td>{{ ingredient.price_per_pizza }}</td>
-        <td>{{ ingredient.available }}</td>
-        <td>
+        <td>{{ deliveryman.id }}</td>
+        <td>{{ deliveryman.name }}</td>
+        <td>{{ deliveryman.cedula }}</td>
+        <td>{{ deliveryman.stars }}</td>
+        <td>{{ deliveryman.ratings_counter }}</td>
+        <td>{{ deliveryman.active }}</td>
+         <td>
             <div class="action-buttons d-flex justify-content-end">
-               <button onclick="openModal('{% url 'ors:edit_ingredient' ingredient.id  %}')" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
+               <a onclick="openModal('{% url 'ors:edit_deliveryman' deliveryman.id  %}')" data-bs-toggle="modal" data-bs-target="#updateIngredientModal" class="btn btn-primary light me-2">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <rect x="0" y="0" width="24" height="24"/>
@@ -33,11 +36,13 @@
                          <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
                   </g>
                 </svg>
-               </button>
-            </div>
 
+               </a>
+            </div>
         </td>
+
         </tr>
     {% endfor %}
 {% endblock %}
 
+{

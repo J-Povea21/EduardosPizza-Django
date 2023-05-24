@@ -37,10 +37,13 @@
                     <span class="nav-text">General</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'ors:statistics' %}">Estadísticas</a></li>
+                    <li><a href="{% url 'ors:admin_panel' %}">Estadísticas</a></li>
                     <li><a href="{% url 'ors:reviews' %}">Reseñas</a></li>
-                    <li><a href="{% url 'ors:admin_panel' %}">Ordenes</a></li>
+                    <li><a href="{% url 'ors:order_list' %}">Ordenes</a></li>
                     <li><a href="{% url 'ors:customers' %}">Clientes</a></li>
+                    <li><a href="{% url 'ors:deliverymen' %}">Repartidores</a></li>
+                    <li><a href="{% url 'ors:pizzas' %}">Pizzas</a></li>
+                    <li><a href="{% url 'ors:coupons' %}">Cupones</a></li>
                 </ul>
             </li>
 

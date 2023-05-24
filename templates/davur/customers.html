@@ -1,12 +1,31 @@
-{% extends 'davur/elements/layouts/admin.html' %}
+{% extends 'davur/table/base-table-1.html' %}
 
-{% load static %}
-
-{% block additional_css %}
+{% block additional_buttons %}
+ <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
+            <h2 class="dashboard-title me-auto">{{ title }}</h2>
+ </div>
 {% endblock %}
 
-{% block content %}
+{% block table_headers %}
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Cedula</th>
+    <th>Teléfono</th>
+    <th>Dirección</th>
 {% endblock %}
 
-{% block additional_js %}
+{% block table_content %}
+    {% for customer in object_list %}
+
+        <tr>
+
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.cedula }}</td>
+        <td>{{ customer.phone_number }}</td>
+        <td>{{ customer.address }}</td>
+
+        </tr>
+    {% endfor %}
 {% endblock %}
+

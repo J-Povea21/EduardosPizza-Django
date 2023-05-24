@@ -20,7 +20,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="landing" />
     <orderEntry type="module" module-name="dashboard" />
-    <orderEntry type="module" module-name="DLinkedLists" />
+    <orderEntry type="module" module-name="ExpoFisica-2023" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
