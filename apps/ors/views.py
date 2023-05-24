@@ -253,6 +253,7 @@ def create_order(request, **kwargs):
             order.calculate_total_value()
 
             return redirect('webapp:index')
+
     else:
         customer_form = CustomerForm()
         order_form = OrderForm()
