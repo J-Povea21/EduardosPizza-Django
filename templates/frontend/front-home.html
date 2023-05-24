@@ -1,12 +1,14 @@
 {% extends 'frontend/elements/layouts/base.html' %}
-
 {% load static %}
+
 
 {% block additional_css %}
 {% endblock %}
 
 {% block content %}
 <div class="content-wrapper">
+
+
     <!-- row -->
     <div class="listcontent-area">
         <aside class="cart-area  dz-scroll" id="cart_area">
@@ -15,165 +17,253 @@
                     <div class="card">
                         <div class="card-body">
                             <img src="{% static 'frontend/images/counter.jpg' %}" class="img-fluid mb-5" alt="">
-                            <h3 class="title mb-4">Your Order in Progress Check Order</h3>
-                            <p class="mb-sm-5 mb-3">Click on any item or Add Order Button to create order</p>
-                            <a href="javascript:void(0);" id="add-order" class="btn btn-warning btn-rounded me-3">Add Order</a>
-                            <a href="front-orders_status.html" class="btn btn-warning light btn-rounded">Order Status</a>
+                            <h3 class="title mb-4">¿Listo para construir su pizza perfecta?</h3>
+                            <p class="mb-sm-5 mb-3">Haga clic en el botón Agregar orden para crear un pedido</p>
+                            <a href="javascript:void(0);" id="add-order" class="btn btn-warning btn-rounded me-3">Agregar orden</a>
                         </div>
                     </div>
                 </div>
                 <div class="h-100" id="add-order-content">
                     <div class="card rounded-0">
                         <div class="card-body p-0">
+                            <div class="mb-3">
+                                <label class="form-label">Seleccione el tamaño: </label>
+                                <div class="mb-3 mb-0">
+                                    <label class="radio-inline me-3"><input type="radio" id="tamano-s" name="tamano" value="20000" onchange="actualizarSuma()"> S ($20k)</label>
+                                    <label class="radio-inline me-3"><input type="radio" id="tamano-m" name="tamano" value="32000" onchange="actualizarSuma()"> M ($32k)</label>
+                                    <label class="radio-inline me-3"><input type="radio" id="tamano-l" name="tamano" value="42000" onchange="actualizarSuma()"> L ($42k)</label>
+                                    <label class="radio-inline me-3"><input type="radio" id="tamano-xl" name="tamano" value="60000" onchange="actualizarSuma()"> XL ($60k)</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Seleccione el tipo de masa: </label>
+                                <div class="mb-3 mb-0">
+                                    <label class="radio-inline me-3"><input type="radio" id="masa-normal" name="masa" value="0" onchange="actualizarSuma()"> Normal </label>
+                                    <label class="radio-inline me-3"><input type="radio" id="masa-integral" name="masa" value="6000" onchange="actualizarSuma()"> Integral</label>
+                                    <label class="radio-inline me-3"><input type="radio" id="masa-eduardos" name="masa" value="6000" onchange="actualizarSuma()"> Eduardo's Cheese</label>
+                                </div>
+                            </div>
                             <div class="table-responsive">
-                                <table class="table text-black">
+                                <table class="table textpython manage.py runserver-black">
                                     <thead>
                                         <tr>
                                             <th>ITEM</th>
-                                            <th>PRICE</th>
-                                            <th>QNT.</th>
-                                            <th>TOTAL($)</th>
+                                            <th>PRECIO</th>
+                                            <th>SELEC</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><span class="font-w500">Farm Ville Pizza</span></td>
-                                            <td>12.00</td>
+                                            <td><span class="font-w500">Tómate</span></td>
+                                            <td>1000.00</td>
                                             <td>
-                                                <div class="quantity btn-quantity style-1">
-                                                    <input id="demo_vertical2" type="text" value="1" name="demo_vertical2"/>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="tomate" name="ingredientes" value="1000" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
                                                 </div>
                                             </td>
-                                            <td>12.00</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="font-w500">Cheese Burst Sandwich</span></td>
-                                            <td>8.00</td>
+                                            <td><span class="font-w500">Champiñón</span></td>
+                                            <td>990.00</td>
                                             <td>
-                                                <div class="quantity btn-quantity style-1">
-                                                    <input id="demo_vertical21" type="text" value="3" name="demo_vertical21"/>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="campinon" name="ingredientes" value="990" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
                                                 </div>
                                             </td>
-                                            <td>8.00</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="font-w500">White Source Pasta</span></td>
-                                            <td>10.00</td>
+                                            <td><span class="font-w500">Jamón</span></td>
+                                            <td>1300.00</td>
                                             <td>
-                                                <div class="quantity btn-quantity style-1">
-                                                    <input id="demo_vertical22" type="text" value="2" name="demo_vertical22"/>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="jamon" name="ingredientes" value="1300" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
                                                 </div>
                                             </td>
-                                            <td>10.00</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="font-w500">Veg Cheese Burger</span></td>
-                                            <td>6.50</td>
+                                            <td><span class="font-w500">Maíz</span></td>
+                                            <td>799.00</td>
                                             <td>
-                                                <div class="quantity btn-quantity style-1">
-                                                    <input id="demo_vertical23" type="text" value="1" name="demo_vertical23"/>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="maiz" name="ingredientes" value="799" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
                                                 </div>
                                             </td>
-                                            <td>6.50</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Tocineta</span></td>
+                                            <td>2000.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="tocineta" name="ingredientes" value="2000" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Pollo</span></td>
+                                            <td>1500.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="pollo" name="ingredientes" value="1500" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Pepperoni</span></td>
+                                            <td>1800.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="peperoni" name="ingredientes" value="1800" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Cebolla</span></td>
+                                            <td>800.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="cebolla" name="ingredientes" value="800" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Pimentón</span></td>
+                                            <td>800.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="pimenton" name="ingredientes" value="800" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-w500">Aceituna</span></td>
+                                            <td>500.00</td>
+                                            <td>
+                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
+                                                    <input type="checkbox" id="aceituna" name="ingredientes" value="500" onchange="actualizarSuma()" required>
+                                                    <label class="form-check-label" for="customCheckBox9"></label>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <div class="card-order-footer">
-                        <div class="amount-details">
-                            <h5 class="d-flex text-right mb-3">
-                                <span class="text">Sub total </span>
-                                <span class="me-0 ms-auto">43.00</span>
-                            </h5>
-                            <h5 class="d-flex text-right mb-3">
-                                <span class="text">Tax</span>
-                                <span class="me-0 ms-auto"> 3.00</span>
-                            </h5>
-                            <h5 class="d-flex text-right mb-3">
-                                <span class="text">Other Charge</span>
-                                <span class="me-0 ms-auto">0.00</span>
+                        <div class="amount-payble">
+                            <h5 class="d-flex text-right mb-0">
+                                <span class="text">SubTotal</span>
+                                <span class="me-0 ms-auto" >0.00</span>
                             </h5>
                         </div>
                         <div class="amount-payble">
                             <h5 class="d-flex text-right mb-0">
-                                <span class="text">Amount to Pay</span>
-                                <span class="me-0 ms-auto">46.00</span>
+                                <span class="text">Cargo por envio</span>
+                                <span class="me-0 ms-auto">4800.00</span>
                             </h5>
                         </div>
-
+                        <div class="amount-payble">
+                            <h5 class="d-flex text-right mb-0">
+                                <span class="text">Total a pagar</span>
+                                <span class="me-0 ms-auto" >0.00</span>
+                            </h5>
+                        </div>
                         <div class="btn_box">
                             <div class="row no-gutter mx-0">
-                                <a href="javascript:void(0);" id="home-counter-tab" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancel</a>
-                                <a href="javascript:void(0);" id="place-order-tab" class="btn btn-primary btn-block col-6 m-0 rounded-0">Place Order</a>
+                                <a href="javascript:void(0);" id="home-counter-tab" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancelar</a>
+                                <a href="javascript:void(0);" id="place-order-tab" class="btn btn-primary btn-block col-6 m-0 rounded-0">Realizar pedido</a>
                             </div>
                         </div>
                     </div>
                 </div>
+                <script>
+                    var ingredientesSeleccionados = [];
+                    // función para actualizar el subtotal y el total
+                    function actualizarSuma() {
+                        var subtotal = 0;
+                        var tamano = document.querySelector('input[name="tamano"]:checked').value;
+                        var masa = document.querySelector('input[name="masa"]:checked').value;
+                        for (var i = 0; i < ingredientesSeleccionados.length; i++) {
+                            subtotal += ingredientesSeleccionados[i];
+                        }
+                        subtotal += parseInt(tamano) + parseInt(masa);
+                        var total = subtotal + 4800;
+                        document.getElementById("subtotal").innerHTML = "$" + subtotal.toFixed(2);
+                        document.getElementById("total").innerHTML = "$" + total.toFixed(2);
+                    }
+                    function actualizarIngredientes(valor, seleccionado) {
+                        if (seleccionado) {
+                            ingredientesSeleccionados.push(valor);
+                        } else {
+                            var index = ingredientesSeleccionados.indexOf(valor);
+                            if (index > -1) {
+                                ingredientesSeleccionados.splice(index, 1);
+                            }
+                        }
+                        actualizarSuma();
+                    }
+                </script>
                 <div class="h-100" id="place-order" >
                     <div class="card rounded-0">
                         <div class="card-body">
                             <form>
-                                <h4 class="mb-4">Amount to Pay <strong> $46.00 </strong></h4>
                                 <div class="form-group mb-4 pb-2">
-                                    <label class="font-w600">Select Payment Method</label>
+                                    <label class="font-w600">Seleccione método de pago</label>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                                             <div class="custom-control custom-radio">
                                                 <input checked="" type="radio" id="cash" name="PaymentMethod" class="custom-control-input">
-                                                <label class="custom-control-label" for="cash"><span class="ms-2">Cash</span></label>
+                                                <label class="custom-control-label" for="cash"><span class="ms-2">Efectivo</span></label>
                                             </div>
                                         </div>
                                         <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="card" name="PaymentMethod" class="custom-control-input">
-                                                <label class="custom-control-label" for="card"><span class="ms-2">Card</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4 pb-2">
-                                    <label class="font-w600">Order type</label>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
-                                            <div class="custom-control custom-radio">
-                                                <input checked="" type="radio" id="takeaway" name="OrderType" class="custom-control-input">
-                                                <label class="custom-control-label" for="takeaway"><span class="ms-2">Takeaway</span></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="dine-in" name="OrderType" class="custom-control-input">
-                                                <label class="custom-control-label" for="dine-in"><span class="ms-2">Dine-in</span></label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                                            <div class="select_box style-1 w-100 d-flex">
-                                                <select class="default-select">
-                                                    <option>Select Table</option>
-                                                    <option>Table No 01</option>
-                                                    <option>Table No 02</option>
-                                                    <option>Table No 03</option>
-                                                    <option>Table No 04</option>
-                                                    <option>Table No 05</option>
-                                                    <option>Table No 06</option>
-                                                    <option>Table No 07</option>
-                                                    <option>Table No 08</option>
-                                                    <option>Table No 09</option>
-                                                    <option>Table No 10</option>
-                                                </select>
+                                                <label class="custom-control-label" for="card"><span class="ms-2">Nequi</span></label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="font-w600">Customer Info (Optional)</label>
-                                    <input type="text" class="form-control solid" placeholder="Enter Full Name">
+                                    <label class="font-w600">Información personal</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control solid" placeholder="Escribir nombre completo"required >
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control solid" placeholder="Enter Phone Number">
+                                    <input type="text" id="id" name="id" class="form-control solid" placeholder="Escribir número de identificación" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="telefono" name="telefono" class="form-control solid" placeholder="Escribir número de teléfono" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="direccion" name="direccion" class="form-control solid" placeholder="Escribir dirección de entrega" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control solid" placeholder="Escribir código de descuento (Opcional)">
                                 </div>
                             </form>
                         </div>
@@ -181,76 +271,51 @@
                     <div class="card-order-footer">
                         <div class="btn_box">
                             <div class="row no-gutter mx-0">
-                                <a href="javascript:void(0);" id="place-order-cancel" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancel</a>
-                                <a href="front-home.html" class="btn btn-primary btn-block col-6 m-0 rounded-0">Submit</a>
+                                <a href="javascript:void(0);" id="place-order-cancel" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancelar</a>
+                                <button type="button" class="btn btn-primary btn-block col-6 m-0 rounded-0"  onclick="return validarCampos()" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Enviar orden</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </aside>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="owl-carousel item-carousel">
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/1.png' %}" alt="">
-                            <h5 class="title mb-0">soft drink</h5>
-                        </div>
+        <div class="modal fade" id="exampleModalCenter">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmación del pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        </button>
                     </div>
-                    <div class="items">
-                        <div class="item-box active">
-                            <img src="{% static 'frontend/images/food-icon/2.png' %}" alt="">
-                            <h5 class="title mb-0">fast food</h5>
-                        </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas realizar esta compra? Haz clic en 'confirmar' para procesar tu pago o en 'cancelar' para hacer cambios en tu pedido.</p>
                     </div>
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/3.png' %}" alt="">
-                            <h5 class="title mb-0">pastry</h5>
-                        </div>
-                    </div>
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/4.png' %}" alt="">
-                            <h5 class="title mb-0">burger</h5>
-                        </div>
-                    </div>
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/5.png' %}" alt="">
-                            <h5 class="title mb-0">chinese</h5>
-                        </div>
-                    </div>
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/6.png' %}" alt="">
-                            <h5 class="title mb-0">vegetable</h5>
-                        </div>
-                    </div>
-                    <div class="items">
-                        <div class="item-box">
-                            <img src="{% static 'frontend/images/food-icon/7.png' %}" alt="">
-                            <h5 class="title mb-0">watermelon</h5>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary"><a href="{% url 'davur:page-order' %}">Confirmar</a></button>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+
+            </div>
             <div class="col-xl-12">
                 <div class="input-group search-area style-1 mb-4">
-                    <input type="text" class="form-control" placeholder="Search here...">
+                    <input type="text" class="form-control" placeholder="Busca aquí...">
                     <div class="input-group-append">
-                        <button class=" btn btn-primary btn-rounded">Search<i class="flaticon-381-search-2 scale3 ms-3"></i></button>
+                        <button class=" btn btn-primary btn-rounded">Buscar<i class="flaticon-381-search-2 scale3 ms-3"></i></button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/1.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-margarita-1-scaled.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">Cheese Burger</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza Margarita</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, tomate, mozzarella fresca y oregano.</h6>
                                 </div>
                             </div>
                         </div>
@@ -258,10 +323,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/2.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-jamon.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">French fries</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza de Jamon</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza simple pero deliciosa con salsa de tomate, queso mozzarella y jamón cocido en cubos.</h6>
                                 </div>
                             </div>
                         </div>
@@ -269,10 +334,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/3.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-pepperoni.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">Veg Pizza</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza de Pepperoni</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza con salsa de tomate, queso mozzarella y rodajas de pepperoni.</h6>
                                 </div>
                             </div>
                         </div>
@@ -280,10 +345,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/4.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-awaiana.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">Cheese Pizza</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza Hawaiana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza de inspiración tropical con salsa de tomate, queso mozzarella, jamón cocido y rodajas de piña.</h6>
                                 </div>
                             </div>
                         </div>
@@ -291,10 +356,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/5.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-ve.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">Veg Sandwich</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza Vegetariana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza sin carne con salsa de tomate, queso mozzarella y una variedad de verduras frescas, como maiz, pimentón, champiñones y aceitunas.</h6>
                                 </div>
                             </div>
                         </div>
@@ -302,10 +367,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/6.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-c.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">French fries</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza de Champiñones</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, aceitunas negras, queso y champiñones.</h6>
                                 </div>
                             </div>
                         </div>
@@ -313,10 +378,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/7.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-napolitana.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">French fries</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza Napolitana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, aceitunas negras y queso mozzarela.</h6>
                                 </div>
                             </div>
                         </div>
@@ -324,10 +389,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/8.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-caprichosa.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">Veg Sandwich</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza Capricciosa</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Pizza de la gastronomía italiana preparada con queso mozzarela, jamón italiano, tomate, pollo y champiñón.</h6>
                                 </div>
                             </div>
                         </div>
@@ -335,43 +400,10 @@
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
                             <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/1.jpg' %}" class="img-fluid" alt="">
+                                <img src="{% static 'frontend/images/dish/pizza-bacon.jpg' %}" class="img-fluid" alt="">
                                 <div class="info">
-                                    <h5 class="name">French fries</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
-                        <div class="card item-card">
-                            <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/2.jpg' %}" class="img-fluid" alt="">
-                                <div class="info">
-                                    <h5 class="name">French fries</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
-                        <div class="card item-card">
-                            <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/3.jpg' %}" class="img-fluid" alt="">
-                                <div class="info">
-                                    <h5 class="name">Veg Sandwich</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
-                        <div class="card item-card">
-                            <div class="card-body p-0">
-                                <img src="{% static 'frontend/images/dish/4.jpg' %}" class="img-fluid" alt="">
-                                <div class="info">
-                                    <h5 class="name">Veg Sandwich</h5>
-                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">$6.00</h6>
+                                    <h5 class="name">Pizza de Bacon</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza con salsa de tomate, queso mozzarella, tocino cortado en trozos y champiñones frescos cortados en rodajas.</h6>
                                 </div>
                             </div>
                         </div>
@@ -385,10 +417,10 @@
 
 {% block additional_js %}
 <script>
-		  
+
 	function ItemsCarousel()
 	{
-	
+
 		/*  testimonial one function by = owl.carousel.js */
 		jQuery('.item-carousel').owlCarousel({
 			loop:true,
@@ -401,36 +433,36 @@
 			items:4,
 			navText: ['', ''],
 			breackpoint:[
-			
-			
+
+
 			]
-			
+
 		})
 	}
-	
+
 	jQuery(window).on('load',function(){
 		setTimeout(function(){
 			ItemsCarousel();
-		}, 1000); 
+		}, 1000);
 	});
-	
+
 	function handleTabs(){
-		$('#add-order-content,#place-order').css("display","none");	
+		$('#add-order-content,#place-order').css("display","none");
 		$('#add-order').on('click',function(){
-			$('#add-order-content').css("display","block");	
-			$('#home-counter').css("display","none");	
+			$('#add-order-content').css("display","block");
+			$('#home-counter').css("display","none");
 		})
 		$('#place-order-tab').on('click',function(){
-			$('#place-order').css("display","block");	
-			$('#add-order-content').css("display","none");	
+			$('#place-order').css("display","block");
+			$('#add-order-content').css("display","none");
 		})
 		$('#place-order-cancel').on('click',function(){
-			$('#place-order').css("display","none");	
-			$('#add-order-content').css("display","block");	
+			$('#place-order').css("display","none");
+			$('#add-order-content').css("display","block");
 		})
 		$('#home-counter-tab').on('click',function(){
-			$('#home-counter').css("display","block");	
-			$('#add-order-content').css("display","none");	
+			$('#home-counter').css("display","block");
+			$('#add-order-content').css("display","none");
 		})
 	}
 	handleTabs();

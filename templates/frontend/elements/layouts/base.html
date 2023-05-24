@@ -26,7 +26,7 @@
     {% for cssurl in dz_array.frontend.frontend_views.global.css %}
     <link rel="stylesheet" href="{% static cssurl %}">
     {% endfor %}
-    
+
     {% block additional_css %}
     {% endblock %}
 
@@ -51,8 +51,8 @@
         Main wrapper start
     ***********************************-->
     <div id="main-wrapper" class="overflow-unset">
-	
-	
+
+
 		<!--**********************************
             Header start
         ***********************************-->
@@ -61,8 +61,8 @@
         <!--**********************************
             Header end
         ***********************************-->
-		
-		
+
+
 		<!--**********************************
             Sidebar start
         ***********************************-->
@@ -70,7 +70,7 @@
         <!--**********************************
             Sidebar end
         ***********************************-->
-		
+
 		<!--**********************************
             Content body start
         ***********************************-->
@@ -84,8 +84,7 @@
         <!--**********************************
             Footer start
         ***********************************-->
-        {% include 'frontend/elements/footer.html' %}
-        
+
         <!--**********************************
             Footer end
         ***********************************-->
@@ -102,21 +101,21 @@
         Scripts
     ***********************************-->
     <!-- Required vendors -->
-   
+
     {% for jsurl in dz_array.frontend.frontend_views.global.js.top %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
-    
+
     {% for jsurl in dz_array.frontend.frontend_views.pagelevel.js|getdata:request.path %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
-    
+
     {% for jsurl in dz_array.frontend.frontend_views.global.js.bottom %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
-    
+
     {% block additional_js %}
     {% endblock %}
-	
+
 </body>
 </html>

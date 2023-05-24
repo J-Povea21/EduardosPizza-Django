@@ -5,7 +5,6 @@ from .forms import *
 def index(request):
     return render(request, 'index.html')
 
-
 def create_order(request, **kwargs):
     if request.method == "POST":
 
@@ -51,3 +50,4 @@ def create_order(request, **kwargs):
         'order_form': order_form,
         'coupon_form': coupon_form
     })
+
