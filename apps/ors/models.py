@@ -166,11 +166,6 @@ class Pizza(models.Model):
             'L': 42000,
             'XL': 60000
         },
-        'mass': {
-            'NORMAL': 0,
-            'INTEGRAL': 4000,
-            'EDUARDOS CHEESE': 6000
-        }
     }
 
     size_types = (

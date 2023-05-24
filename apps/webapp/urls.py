@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('ors/', include('apps.ors.urls')),
-    path('home/', views.home, name='home'),
+    path('create_order/', views.create_order, name='create_order'),
+    path('ors/', include('apps.ors.urls'))
 ]

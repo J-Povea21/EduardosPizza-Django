@@ -2,36 +2,6 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
-
-
-
-
-            {% if perms.users.view_customuser or perms.auth.view_group or perms.auth.view_permission %} 
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                <i class="flaticon-381-networking"></i>
-                <span class="nav-text">Modules Demo</span>
-                <span class="badge badge-xs badge-danger ms-1">New</span>
-            </a>
-            <ul aria-expanded="false">
-
-                {% if perms.users.view_customuser or perms.users.change_customuser or perms.users.add_customuser or perms.users.delete_customuser %}
-                <li><a href="{% url 'davur:users' %}">Users</a></li>
-                {% endif %}
-                {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
-                <li><a href="{% url 'davur:groups' %}">Groups</a></li>
-                {% endif %}
-                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
-                <li><a href="{% url 'davur:permissions' %}">Permissions</a></li>
-                {% endif %}
-            </ul>
-        </li>
-        {% endif %}
-
-
-
-
-
-
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-networking"></i>
                     <span class="nav-text">General</span>

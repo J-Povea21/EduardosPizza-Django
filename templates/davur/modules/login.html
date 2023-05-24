@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 
@@ -45,45 +42,32 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
 									<div class="text-center mb-3">
-										<a href="{% url 'davur:index' %}"><img src="{% static 'davur/images/logo-full.png' %}" alt=""></a>
+										<a href="{% url 'webapp:index' %}"><img src="{% static 'davur/images/logo-full.png' %}" alt=""></a>
 									</div>
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
+                                    <h4 class="text-center mb-4">Panel de administración</h4>
 
 									{% include 'davur/elements/alert.html' %} 
-                                    <form method="post">{% csrf_token %}
+                                    <form action="{% url 'ors:login'  %}" method="POST">{% csrf_token %}
                                         <div class="form-group">
-                                            <label class="mb-1"><strong>Email</strong></label>
-											{{ form.email|attr:"type:email"|attr:"class:form-control"|attr:"placeholder:Email" }}
+                                            <label class="mb-1"><strong>Usuario</strong></label>
+											{{ form.username|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Nombre de usuario" }}
 											<div class="text-danger w-100 d-block mt-1">
-											  {{ form.email.errors }}
+											  {{ form.username.errors }}
 											</div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="mb-1"><strong>Password</strong></label>
-											{{ form.password|attr:"class:form-control"|attr:"placeholder:Password"|attr:"id:dz-password"|attr:"type:password" }}
+                                            <label class="mb-1"><strong>Contraseña</strong></label>
+											{{ form.password|attr:"class:form-control"|attr:"placeholder:Contraseña"|attr:"id:dz-password"|attr:"type:password" }}
 											<div class="text-danger w-100 d-block mt-1">
 											  {{ form.password.errors }}
 											</div>
                                         </div>
                                         <div class="form-row d-flex justify-content-between mt-4 mb-2 flex-wrap">
-                                            <div class="form-group">
-                                               <div class="custom-control custom-checkbox me-2 ">
-													<input type="checkbox" class="form-check-input mt-0" id="basic_checkbox_1">
-													<label class="custom-control-label ms-2 mb-0" for="basic_checkbox_1">Remember my preference</label>
-												</div>
-                                            </div>
-                                            <div class="form-group">
-                                                <a href="{% url 'reset_password' %}">Forgot Password?</a>
-                                            </div>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
                                         </div>
                                     </form>
-                                    <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="{% url 'davur:signup' %}">Sign up</a></p>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -92,6 +76,15 @@
             </div>
         </div>
     </div>
+
+{% if messages %}
+    <div class="alert alert-primary" role="alert">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
 </body>
 <!--**********************************
 	Scripts

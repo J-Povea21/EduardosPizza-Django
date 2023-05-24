@@ -3,7 +3,9 @@ from . import views
 
 
 urlpatterns = [
-    path('create_order', views.create_order, name='create_order'),
+    path('login', views.login_user, name='login'),
+    path('logout', views.logout_user, name='logout'),
+
     path('admin_panel', views.admin_panel, name='admin_panel'),
     path('reviews', views.ReviewListView.as_view(), name='reviews'),
     path('customers', views.CustomerListView.as_view(), name='customers'),
