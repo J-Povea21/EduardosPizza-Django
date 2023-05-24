@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../DLinkedLists/.idea/DLinkedLists.iml" filepath="$PROJECT_DIR$/../DLinkedLists/.idea/DLinkedLists.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/EduardosPizza_Django.iml" filepath="$PROJECT_DIR$/.idea/EduardosPizza_Django.iml" />
+      <module fileurl="file://$USER_HOME$/Videos/Django_Davur_v1.1_12_September_2022/dashboard/.idea/dashboard.iml" filepath="$USER_HOME$/Videos/Django_Davur_v1.1_12_September_2022/dashboard/.idea/dashboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../hackaton/landing/.idea/landing.iml" filepath="$PROJECT_DIR$/../../hackaton/landing/.idea/landing.iml" />
+    </modules>
+  </component>
+</project>
