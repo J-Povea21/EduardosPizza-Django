@@ -1,11 +1,12 @@
 (function($) {
-    /* "use strict" */
+  "use strict" 
 
+	
 	/* function draw() {
 		
 	} */
 
- var dzSparkLine = function(){
+ var dlabSparkLine = function(){
 	let draw = Chart.controllers.line.__super__.draw; //draw shadow
 	
 	var screenWidth = $(window).width();
@@ -13,7 +14,7 @@
 	var barChart1 = function(){
 		if(jQuery('#barChart_1').length > 0 ){
 			const barChart_1 = document.getElementById("barChart_1").getContext('2d');
-			
+    
 			barChart_1.height = 100;
 
 			new Chart(barChart_1, {
@@ -25,9 +26,9 @@
 						{
 							label: "My First dataset",
 							data: [65, 59, 80, 81, 56, 55, 40],
-							borderColor: 'rgba(47, 76, 221, 1)',
+							borderColor: 'rgba(0,161,91)',
 							borderWidth: "0",
-							backgroundColor: 'rgba(47, 76, 221, 1)'
+							backgroundColor: 'rgba(0,161,91)'
 						}
 					]
 				},
@@ -48,7 +49,6 @@
 			});
 		}
 	}
-	
 	var barChart2 = function(){
 		if(jQuery('#barChart_2').length > 0 ){
 
@@ -56,8 +56,8 @@
 			const barChart_2 = document.getElementById("barChart_2").getContext('2d');
 			//generate gradient
 			const barChart_2gradientStroke = barChart_2.createLinearGradient(0, 0, 0, 250);
-			barChart_2gradientStroke.addColorStop(0, "rgba(47, 76, 221, 1)");
-			barChart_2gradientStroke.addColorStop(1, "rgba(47, 76, 221, 0.5)");
+			barChart_2gradientStroke.addColorStop(0, "rgba(0,161,91)");
+			barChart_2gradientStroke.addColorStop(1, "rgba(0,161,91, 0.5)");
 
 			barChart_2.height = 100;
 
@@ -101,16 +101,16 @@
 			const barChart_3 = document.getElementById("barChart_3").getContext('2d');
 			//generate gradient
 			const barChart_3gradientStroke = barChart_3.createLinearGradient(50, 100, 50, 50);
-			barChart_3gradientStroke.addColorStop(0, "rgba(47, 76, 221, 1)");
-			barChart_3gradientStroke.addColorStop(1, "rgba(47, 76, 221, 0.5)");
+			barChart_3gradientStroke.addColorStop(0, "rgba(0,161,91)");
+			barChart_3gradientStroke.addColorStop(1, "rgba(0,161,91, 0.5)");
 
 			const barChart_3gradientStroke2 = barChart_3.createLinearGradient(50, 100, 50, 50);
-			barChart_3gradientStroke2.addColorStop(0, "rgba(43, 193, 85, 1)");
-			barChart_3gradientStroke2.addColorStop(1, "rgba(43, 193, 85, 1)");
+			barChart_3gradientStroke2.addColorStop(0, "rgba(98, 126, 234, 1)");
+			barChart_3gradientStroke2.addColorStop(1, "rgba(98, 126, 234, 1)");
 
 			const barChart_3gradientStroke3 = barChart_3.createLinearGradient(50, 100, 50, 50);
-			barChart_3gradientStroke3.addColorStop(0, "rgba(255, 109, 76, 1)");
-			barChart_3gradientStroke3.addColorStop(1, "rgba(255, 109, 76, 1)");
+			barChart_3gradientStroke3.addColorStop(0, "rgba(238, 60, 60, 1)");
+			barChart_3gradientStroke3.addColorStop(1, "rgba(238, 60, 60, 1)");
 			
 			barChart_3.height = 100;
 
@@ -185,11 +185,8 @@
 					}
 				}
 			});
-
-
 		}
 	}
-	
 	var lineChart1 = function(){
 		
 		
@@ -227,10 +224,10 @@
 						{
 							label: "My First dataset",
 							data: [25, 20, 60, 41, 66, 45, 80],
-							borderColor: 'rgba(47, 76, 221, 1)',
+							borderColor: 'rgba(0,161,91)',
 							borderWidth: "2",
 							backgroundColor: 'transparent',  
-							pointBackgroundColor: 'rgba(47, 76, 221, 1)'
+							pointBackgroundColor: 'rgba(0,161,91)'
 						}
 					]
 				},
@@ -265,11 +262,9 @@
 			const lineChart_2 = document.getElementById("lineChart_2").getContext('2d');
 			//generate gradient
 			const lineChart_2gradientStroke = lineChart_2.createLinearGradient(500, 0, 100, 0);
-			lineChart_2gradientStroke.addColorStop(0, "rgba(47, 76, 221, 1)");
-			lineChart_2gradientStroke.addColorStop(1, "rgba(47, 76, 221, 0.5)");
+			lineChart_2gradientStroke.addColorStop(0, "rgba(0,161,91)");
+			lineChart_2gradientStroke.addColorStop(1, "rgba(0,161,91, 0.5)");
 
-			//Chart.controllers.line.draw = function(){ };
-			
 			Chart.controllers.line = Chart.controllers.line.extend({
 				draw: function () {
 					draw.apply(this, arguments);
@@ -285,9 +280,7 @@
 						nk.restore();
 					}
 				}
-				
 			});
-				
 				
 			lineChart_2.height = 100;
 
@@ -303,7 +296,7 @@
 							borderColor: lineChart_2gradientStroke,
 							borderWidth: "2",
 							backgroundColor: 'transparent', 
-							pointBackgroundColor: 'rgba(47, 76, 221, 0.5)'
+							pointBackgroundColor: 'rgba(0,161,91, 0.5)'
 						}
 					]
 				},
@@ -329,15 +322,14 @@
 			});
 		}
 	}
-	
 	var lineChart3 = function(){
 		//dual line chart
 		if(jQuery('#lineChart_3').length > 0 ){
 			const lineChart_3 = document.getElementById("lineChart_3").getContext('2d');
 			//generate gradient
 			const lineChart_3gradientStroke1 = lineChart_3.createLinearGradient(500, 0, 100, 0);
-			lineChart_3gradientStroke1.addColorStop(0, "rgba(47, 76, 221, 1)");
-			lineChart_3gradientStroke1.addColorStop(1, "rgba(47, 76, 221, 0.5)");
+			lineChart_3gradientStroke1.addColorStop(0, "rgba(0,161,91)");
+			lineChart_3gradientStroke1.addColorStop(1, "rgba(0,161,91, 0.5)");
 
 			const lineChart_3gradientStroke2 = lineChart_3.createLinearGradient(500, 0, 100, 0);
 			lineChart_3gradientStroke2.addColorStop(0, "rgba(255, 92, 0, 1)");
@@ -374,7 +366,7 @@
 							borderColor: lineChart_3gradientStroke1,
 							borderWidth: "2",
 							backgroundColor: 'transparent', 
-							pointBackgroundColor: 'rgba(47, 76, 221, 0.5)'
+							pointBackgroundColor: 'rgba(0,161,91, 0.5)'
 						}, {
 							label: "My First dataset",
 							data: [5, 20, 15, 41, 35, 65, 80],
@@ -407,7 +399,6 @@
 			});
 		}
 	}
-	
 	var lineChart03 = function(){
 		//dual line chart
 		if(jQuery('#lineChart_3Kk').length > 0 ){
@@ -481,12 +472,11 @@
 		}
 
 	}	
-	
 	var areaChart1 = function(){	
 		//basic area chart
 		if(jQuery('#areaChart_1').length > 0 ){
 			const areaChart_1 = document.getElementById("areaChart_1").getContext('2d');
-			
+    
 			areaChart_1.height = 100;
 
 			new Chart(areaChart_1, {
@@ -500,7 +490,7 @@
 							data: [25, 20, 60, 41, 66, 45, 80],
 							borderColor: 'rgba(0, 0, 1128, .3)',
 							borderWidth: "1",
-							backgroundColor: 'rgba(47, 76, 221, .5)', 
+							backgroundColor: 'rgba(255,167,215,1)', 
 							pointBackgroundColor: 'rgba(0, 0, 1128, .3)'
 						}
 					]
@@ -527,15 +517,14 @@
 			});
 		}
 	}
-	
 	var areaChart2 = function(){	
 		//gradient area chart
 		if(jQuery('#areaChart_2').length > 0 ){
 			const areaChart_2 = document.getElementById("areaChart_2").getContext('2d');
 			//generate gradient
 			const areaChart_2gradientStroke = areaChart_2.createLinearGradient(0, 1, 0, 500);
-			areaChart_2gradientStroke.addColorStop(0, "rgba(255, 109, 76, 0.2)");
-			areaChart_2gradientStroke.addColorStop(1, "rgba(255, 109, 76, 0)");
+			areaChart_2gradientStroke.addColorStop(0, "rgba(238, 60, 60, 0.2)");
+			areaChart_2gradientStroke.addColorStop(1, "rgba(238, 60, 60, 0)");
 			
 			areaChart_2.height = 100;
 
@@ -548,7 +537,7 @@
 						{
 							label: "My First dataset",
 							data: [25, 20, 60, 41, 66, 45, 80],
-							borderColor: "#FF2E2E",
+							borderColor: "#ff2625",
 							borderWidth: "4",
 							backgroundColor: areaChart_2gradientStroke
 						}
@@ -581,7 +570,7 @@
 		//gradient area chart
 		if(jQuery('#areaChart_3').length > 0 ){
 			const areaChart_3 = document.getElementById("areaChart_3").getContext('2d');
-			
+    
 			areaChart_3.height = 100;
 
 			new Chart(areaChart_3, {
@@ -593,9 +582,9 @@
 						{
 							label: "My First dataset",
 							data: [25, 20, 60, 41, 66, 45, 80],
-							borderColor: 'rgb(47, 76, 221)',
+							borderColor: 'rgb(0,161,91)',
 							borderWidth: "1",
-							backgroundColor: 'rgba(47, 76, 221, .5)'
+							backgroundColor: 'rgba(255,167,215,1)'
 						}, 
 						{
 							label: "My First dataset",
@@ -677,7 +666,6 @@
 			});
 		}
 	}
-	
 	var pieChart = function(){
 		//pie chart
 		if(jQuery('#pie_chart').length > 0 ){
@@ -692,15 +680,15 @@
 						data: [45, 25, 20, 10],
 						borderWidth: 0, 
 						backgroundColor: [
-							"rgba(47, 76, 221, .9)",
-							"rgba(47, 76, 221, .7)",
-							"rgba(47, 76, 221, .5)",
+							"rgba(0,161,91, .9)",
+							"rgba(0,161,91, .7)",
+							"rgba(255,167,215,1)",
 							"rgba(0,0,0,0.07)"
 						],
 						hoverBackgroundColor: [
-							"rgba(47, 76, 221, .9)",
-							"rgba(47, 76, 221, .7)",
-							"rgba(47, 76, 221, .5)",
+							"rgba(0,161,91, .9)",
+							"rgba(0,161,91, .7)",
+							"rgba(255,167,215,1)",
 							"rgba(0,0,0,0.07)"
 						]
 
@@ -720,8 +708,7 @@
 			});
 		}
 	}
-    
-	var doughnutChart = function(){
+    var doughnutChart = function(){
 		if(jQuery('#doughnut_chart').length > 0 ){
 			//doughut chart
 			const doughnut_chart = document.getElementById("doughnut_chart").getContext('2d');
@@ -736,14 +723,14 @@
 						borderWidth: 3, 
 						borderColor: "rgba(255,255,255,1)",
 						backgroundColor: [
-							"rgba(47, 76, 221, 1)",
-							"rgba(43, 193, 85, 1)",
-							"rgba(255, 109, 76, 1)"
+							"rgba(0,161,91)",
+							"rgba(98, 126, 234, 1)",
+							"rgba(238, 60, 60, 1)"
 						],
 						hoverBackgroundColor: [
-							"rgba(47, 76, 221, 0.9)",
-							"rgba(43, 193, 85, .9)",
-							"rgba(255, 109, 76, .9)"
+							"rgba(0,161,91, 0.9)",
+							"rgba(98, 126, 234, .9)",
+							"rgba(238, 60, 60, .9)"
 						]
 
 					}],
@@ -763,7 +750,6 @@
 			});
 		}
 	}
-	
 	var polarChart = function(){
 		if(jQuery('#polar_chart').length > 0 ){
 			//polar chart
@@ -777,10 +763,10 @@
 						data: [15, 18, 9, 6, 19],
 						borderWidth: 0, 
 						backgroundColor: [
-							"rgba(47, 76, 221, 1)",
-							"rgba(43, 193, 85, 1)",
-							"rgba(255, 109, 76, 1)",
-							"rgba(255, 46, 46, 1)",
+							"rgba(0,161,91)",
+							"rgba(98, 126, 234, 1)",
+							"rgba(238, 60, 60, 1)",
+							"rgba(54, 147, 255, 1)",
 							"rgba(255, 92, 0, 1)"
 						]
 
@@ -794,6 +780,8 @@
 
 		}
 	}
+
+
 
 	/* Function ============ */
 	return {
@@ -842,12 +830,12 @@ jQuery(document).ready(function(){
 });
 	
 jQuery(window).on('load',function(){
-	dzSparkLine.load();
+	dlabSparkLine.load();
 });
 
 jQuery(window).on('resize',function(){
-	//dzSparkLine.resize();
-	setTimeout(function(){ dzSparkLine.resize(); }, 1000);
+	//dlabSparkLine.resize();
+	setTimeout(function(){ dlabSparkLine.resize(); }, 1000);
 });
 	
 })(jQuery);

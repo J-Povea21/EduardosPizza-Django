@@ -10,9 +10,11 @@
     <th>ID</th>
     <th>Nombre</th>
     <th>Cedula</th>
+    <th>Teléfono</th>
     <th>Estrellas</th>
     <th>Nro. de calificaciones</th>
     <th>Activo</th>
+    <th>Editar</th>
 {% endblock %}
 
 {% block table_content %}
@@ -23,6 +25,7 @@
         <td>{{ deliveryman.id }}</td>
         <td>{{ deliveryman.name }}</td>
         <td>{{ deliveryman.cedula }}</td>
+        <td>{{ deliveryman.phone_number }}</td>
         <td>{{ deliveryman.stars }}</td>
         <td>{{ deliveryman.ratings_counter }}</td>
         <td>{{ deliveryman.active }}</td>

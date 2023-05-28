@@ -1,12 +1,11 @@
 from django import forms
 from django.contrib.auth import authenticate
-from .models import Deliveryman, Coupon, Mass, Ingredient
+from .models import Deliveryman, Coupon, Mass, Ingredient, Size
 
 
 #### Forms ####
 
 class LoginForm(forms.Form):
-
     username = forms.CharField(label='Username', max_length=30)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
@@ -90,4 +89,15 @@ class MassForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control input-rounded '}),
             'price_per_pizza': forms.NumberInput(attrs={'class': 'form-control input-rounded ', 'min': 0}),
             'available': forms.CheckboxInput(attrs={'class': 'form-check custom-checkbox mb-3 checkbox-info check-lg'}),
+        }
+
+
+class SizeForm(forms.ModelForm):
+    class Meta:
+        model = Size
+        fields = '__all__'
+        widgets = {
+            'name': forms.TextInput,
+            'price': forms.NumberInput,
+            'available': forms.CheckboxInput,
         }

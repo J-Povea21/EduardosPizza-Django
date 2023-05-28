@@ -21,6 +21,9 @@ urlpatterns = [
     path('coupons/create_coupon', views.create_coupon, name='create_coupon'),
     path('coupons/edit_coupon/<int:coupon_id>', views.edit_coupon, name='edit_coupon'),
 
+    path('products/sizes', views.SizeListView.as_view(), name='sizes'),
+    path('products/sizes/create_size', views.create_size, name='create-size'),
+
     path('products/masses', views.MassListView.as_view(), name='masses'),
     path('products/masses/create_mass', views.create_mass, name='create_mass'),
     path('products/masses/<int:mass_id>', views.edit_mass, name='edit_mass'),

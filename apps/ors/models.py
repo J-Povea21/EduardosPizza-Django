@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -9,7 +11,6 @@ import random
 # Create your models here.
 
 class Product(models.Model):
-
     name = models.CharField(max_length=30)
     price_per_pizza = models.FloatField(validators=[validate_price])
     available = models.BooleanField(default=True)
@@ -29,31 +30,32 @@ class Mass(Product):
     pass
 
 
-class Person(models.Model):
+class Size(Product):
+    pass
 
+
+class Person(models.Model):
     name = models.CharField(max_length=30, blank=False)
     cedula = models.PositiveIntegerField(
         blank=False,
         validators=[validate_cedula],
         unique=True
     )
+    phone_number = models.CharField(
+        max_length=10,
+        blank=False,
+        validators=[validate_phone_number],
+        default=''
+    )
 
     def __str__(self):
         return f'{self.name}'
-
-
 
     class Meta:
         abstract = True
 
 
 class Customer(Person):
-    phone_number = models.CharField(
-        max_length=10,
-        blank=False,
-        validators=[validate_phone_number]
-    )
-
     address = models.CharField(blank=False)
 
 
@@ -114,10 +116,11 @@ class Rating(models.Model):
 
         deliveryman.stars = new_average
         deliveryman.ratings_counter = total_ratings
-        deliveryman.save()
+        deliveryman.save(update_fields=['stars', 'ratings_counter'])
 
 
 class Order(models.Model):
+
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
     deliveryman = models.ForeignKey(Deliveryman, on_delete=models.PROTECT, related_name='deliveries')
 
@@ -136,7 +139,8 @@ class Order(models.Model):
 
     total_value = models.FloatField(default=0)
 
-    domicile_price = models.PositiveIntegerField(default=8000)
+    domicile_price = models.PositiveIntegerField(default=4800)
+
 
     def save(self, customer=None, coupon=None, *args, **kwargs):
         if coupon:
@@ -159,26 +163,11 @@ class Order(models.Model):
 
 
 class Pizza(models.Model):
-    values_dict = {
-        'size': {
-            'S': 20000,
-            'M': 32000,
-            'L': 42000,
-            'XL': 60000
-        },
-    }
-
-    size_types = (
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-        ('XL', 'Extra Large')
-    )
 
     order = models.OneToOneField(Order, on_delete=models.CASCADE,
                                  null=True, related_name='pizza')
 
-    size = models.CharField(max_length=2, choices=size_types)
+    size = models.ForeignKey(Size, on_delete=models.DO_NOTHING)
 
     mass_type = models.ForeignKey(Mass, on_delete=models.DO_NOTHING)
 
@@ -193,7 +182,7 @@ class Pizza(models.Model):
     def save(self, order=None, ingredients=None,
              *args, **kwargs):
         self.price_per_mass = self.mass_type.price_per_pizza
-        self.price_per_size = self.values_dict['size'][self.size]
+        self.price_per_size = self.size.price_per_pizza
         self.order = order
 
         super(Pizza, self).save(*args, **kwargs)

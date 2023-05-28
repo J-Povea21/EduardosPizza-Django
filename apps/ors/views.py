@@ -112,7 +112,48 @@ class IngredientListView(BaseListView):
     title = 'Ingredientes'
 
 
+class SizeListView(BaseListView):
+    model = Size
+    template_name = 'davur/sizes.html'
+    title = 'Tamaños'
+
+
 ## CRUD of the products ##
+
+
+def create_size(request):
+    if request.method == 'POST':
+        form = SizeForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('ors:sizes')
+    else:
+        form = SizeForm()
+
+    return render(request, 'davur/create/create_size.html', {'form': form})
+
+
+def edit_size(request, id):
+    size = Size.objects.get(pk=id)
+    if request.method == 'POST':
+        form = SizeForm(request.POST, instance=size)
+
+        if form.is_valid():
+            # Update the size with the new data
+            size.name = form.cleaned_data['name']
+            size.price = form.cleaned_data['price']
+            size.available = form.cleaned_data['available']
+
+            size.save(update_fields=['name', 'price', 'available'])
+            return redirect('ors:sizes')
+    else:
+        # Populate the size form with the current data
+        form = SizeForm(instance=size)
+
+    # Render the template with the form
+    return render(request, 'davur/update/edit_size.html', {'form': form, 'size': size})
+
 
 def create_ingredient(request):
     if request.method == 'POST':

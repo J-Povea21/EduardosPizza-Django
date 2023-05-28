@@ -299,8 +299,6 @@
 			markers: {
 		shape: "circle",
 		},
-		
-		
 			legend: {
 				show: true,
 				fontSize: '12px',
