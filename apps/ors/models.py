@@ -100,7 +100,7 @@ class Rating(models.Model):
     )
     rating_value = models.PositiveIntegerField(choices=rating_values)
 
-    message = models.CharField(max_length=200, default='Sin mensaje', blank=True)
+    message = models.CharField(max_length=200, blank=True)
 
     def save(self, order=None, *args, **kwargs):
         self.order = order

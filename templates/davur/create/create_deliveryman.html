@@ -23,39 +23,4 @@
 </form>
 {% endblock form_block %}
 
-{% block additionalAjax %}
-     <script>
-        $(document).ready(function() {
-      $('#deliveryman-form').submit(function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        var form = $(this);
-        var formData = form.serialize(); // Serialize the form data
-
-        // Send the AJAX request to check if cedula is valid
-        $.ajax({
-          url: form.attr('action'),
-          type: form.attr('method'),
-          data: formData,
-          success: function(response) {
-            // Check if the cedula exists
-            if (response.exists) {
-              // Show an error message in the modal
-              $('#error-message').text(response.errors);
-            } else {
-              // Submit the form if the cedula doesn't exist
-              window.location.href = response.redirect_to;
-            }
-          },
-          error: function(xhr, status, error) {
-            // Handle error if the AJAX request fails
-            console.error(xhr.responseText);
-          }
-        });
-      });
-    });
-    </script>
-
-{% endblock additionalAjax %}
-
 
