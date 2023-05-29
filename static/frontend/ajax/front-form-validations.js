@@ -18,7 +18,11 @@ $(document).ready(function() {
                 }else{
                     window.location.href = response.redirect_to;
                 }
-              }
+              },
+             error: function(response) {
+                  $('#error-title').text('¡Ups! Parece que hay un error en el servidor');
+                  $('#error-message').text('Por favor, inténtalo de nuevo más tarde');
+                }
          });
     });
 

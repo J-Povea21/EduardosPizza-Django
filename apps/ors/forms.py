@@ -50,7 +50,7 @@ class DeliverymanCreationForm(forms.ModelForm):
     def get_error_messages(self):
         error_list = []
         if self.errors.get('cedula'):
-            error_list.append('La cédula debe ser positiva')
+            error_list.append('La cédula debe ser positiva y tener máximo 10 digitos')
         return error_list
 
     def generate_response(self, has_errors: bool = False):
