@@ -1,285 +1,133 @@
 {% extends 'frontend/elements/layouts/base.html' %}
 {% load static %}
-
+{% load widget_tweaks %}
 
 {% block additional_css %}
 {% endblock %}
 
 {% block content %}
 <div class="content-wrapper">
-
-
+    <form id="front-form" method="POST" action="{% url 'webapp:create-order' %}">
+        {% csrf_token %}
     <!-- row -->
     <div class="listcontent-area">
+
+        {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show">
+                    {% for message in messages %}
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                            <strong>{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                            </button>
+                    {% endfor %}
+        </div>
+        {% endif %}
         <aside class="cart-area  dz-scroll" id="cart_area">
             <div class="" >
                 <div class="h-100" id="home-counter">
                     <div class="card">
                         <div class="card-body">
                             <img src="{% static 'frontend/images/counter.jpg' %}" class="img-fluid mb-5" alt="">
-                            <h3 class="title mb-4">¿Listo para construir su pizza perfecta?</h3>
-                            <p class="mb-sm-5 mb-3">Haga clic en el botón Agregar orden para crear un pedido</p>
+                            <h3 class="title mb-4">¿Listo para construir tu pizza perfecta?</h3>
+                            <p class="mb-sm-5 mb-3">Presiona el botón 'Agregar orden' para crear un pedido</p>
                             <a href="javascript:void(0);" id="add-order" class="btn btn-warning btn-rounded me-3">Agregar orden</a>
                         </div>
                     </div>
                 </div>
-                <div class="h-100" id="add-order-content">
+                    <div class="h-100" id="add-order-content">
                     <div class="card rounded-0">
                         <div class="card-body p-0">
+                        <!--Add a title to the card that says 'Ordenando' -->
+                            <h3 class="title mb-4">Información de la pizza</h3>
                             <div class="mb-3">
-                                <label class="form-label">Seleccione el tamaño: </label>
+                                <label class="form-label">Selecciona el tamaño: </label>
                                 <div class="mb-3 mb-0">
-                                    <label class="radio-inline me-3"><input type="radio" id="tamano-s" name="tamano" value="20000" onchange="actualizarSuma()"> S ($20k)</label>
-                                    <label class="radio-inline me-3"><input type="radio" id="tamano-m" name="tamano" value="32000" onchange="actualizarSuma()"> M ($32k)</label>
-                                    <label class="radio-inline me-3"><input type="radio" id="tamano-l" name="tamano" value="42000" onchange="actualizarSuma()"> L ($42k)</label>
-                                    <label class="radio-inline me-3"><input type="radio" id="tamano-xl" name="tamano" value="60000" onchange="actualizarSuma()"> XL ($60k)</label>
+                                   {{ pizza_form.size|attr:"class:form-select"}}
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Seleccione el tipo de masa: </label>
+                                <label class="form-label">Selecciona el tipo de masa: </label>
                                 <div class="mb-3 mb-0">
-                                    <label class="radio-inline me-3"><input type="radio" id="masa-normal" name="masa" value="0" onchange="actualizarSuma()"> Normal </label>
-                                    <label class="radio-inline me-3"><input type="radio" id="masa-integral" name="masa" value="6000" onchange="actualizarSuma()"> Integral</label>
-                                    <label class="radio-inline me-3"><input type="radio" id="masa-eduardos" name="masa" value="6000" onchange="actualizarSuma()"> Eduardo's Cheese</label>
+                                    {{ pizza_form.mass_type|attr:"class:form-select"}}
                                 </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table textpython manage.py runserver-black">
-                                    <thead>
-                                        <tr>
-                                            <th>ITEM</th>
-                                            <th>PRECIO</th>
-                                            <th>SELEC</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="font-w500">Tómate</span></td>
-                                            <td>1000.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="tomate" name="ingredientes" value="1000" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Champiñón</span></td>
-                                            <td>990.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="campinon" name="ingredientes" value="990" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Jamón</span></td>
-                                            <td>1300.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="jamon" name="ingredientes" value="1300" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Maíz</span></td>
-                                            <td>799.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="maiz" name="ingredientes" value="799" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Tocineta</span></td>
-                                            <td>2000.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="tocineta" name="ingredientes" value="2000" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Pollo</span></td>
-                                            <td>1500.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="pollo" name="ingredientes" value="1500" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Pepperoni</span></td>
-                                            <td>1800.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="peperoni" name="ingredientes" value="1800" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Cebolla</span></td>
-                                            <td>800.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="cebolla" name="ingredientes" value="800" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Pimentón</span></td>
-                                            <td>800.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="pimenton" name="ingredientes" value="800" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="font-w500">Aceituna</span></td>
-                                            <td>500.00</td>
-                                            <td>
-                                                <div class="form-check custom-checkbox mb-3 checkbox-warning check-xl">
-                                                    <input type="checkbox" id="aceituna" name="ingredientes" value="500" onchange="actualizarSuma()" required>
-                                                    <label class="form-check-label" for="customCheckBox9"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Selecciona los ingredientes: </label>
+                            {{ pizza_form.ingredients }}
+                        </div>
+                                <h3 class="title mb-4">Datos personales</h3>
+                                <div class="form-group">
+                                    <label class="text-center font-w600">Nombre completo</label>
+                                   {{ customer_form.name|attr:"class:form-control input-rounded"| attr:"placeholder: Ej.: Juan Perez"}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Cédula</label>
+                                    {{ customer_form.cedula|attr:"type:number"|attr:"min:1"|attr:"class:form-control input-rounded"}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Número de teléfono</label>
+                                    {{ customer_form.phone_number|attr:"type:tel"|attr:"class:form-control input-rounded"|attr:"placeholder: Ej.: 3002227896"|attr:"pattern:[0-9]{3}[0-9]{4}[0-9]{3}" }}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Dirección</label>
+                                    {{ customer_form.address|attr:"class:form-control input-rounded" }}
+                                </div>
+
+                                <div class="form-group mb-4 pb-2">
+                                    <label class="font-w600">Selecciona el método de pago</label>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
+                                            {{ order_form.payment_method|attr:"class:form-select" }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4 class="title mb-4">Información adicional</h4>
+                                <div class="form-group">
+                                    {{ order_form.coupon_code}}
+                                </div>
+
+
+
+
                     </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    <br><br><br><br><br><br><br><br><br><br>
+
                     <div class="card-order-footer">
                         <div class="amount-payble">
                             <h5 class="d-flex text-right mb-0">
                                 <span class="text">SubTotal</span>
-                                <span class="me-0 ms-auto" >0.00</span>
+                                <span class="me-0 ms-auto" id="subTotal" >0.00</span>
                             </h5>
                         </div>
                         <div class="amount-payble">
                             <h5 class="d-flex text-right mb-0">
                                 <span class="text">Cargo por envio</span>
-                                <span class="me-0 ms-auto">4800.00</span>
+                                <span class="me-0 ms-auto" id="domicilePrice">4800.00</span>
                             </h5>
                         </div>
                         <div class="amount-payble">
                             <h5 class="d-flex text-right mb-0">
                                 <span class="text">Total a pagar</span>
-                                <span class="me-0 ms-auto" >0.00</span>
+                                <span class="me-0 ms-auto" id="total">0.00</span>
                             </h5>
                         </div>
                         <div class="btn_box">
                             <div class="row no-gutter mx-0">
                                 <a href="javascript:void(0);" id="home-counter-tab" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancelar</a>
-                                <a href="javascript:void(0);" id="place-order-tab" class="btn btn-primary btn-block col-6 m-0 rounded-0">Realizar pedido</a>
+                                <a  data-bs-toggle="modal" data-bs-target="#confirmOrderModal" class="btn btn-primary btn-block col-6 m-0 rounded-0">Realizar pedido</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <script>
-                    var ingredientesSeleccionados = [];
-                    // función para actualizar el subtotal y el total
-                    function actualizarSuma() {
-                        var subtotal = 0;
-                        var tamano = document.querySelector('input[name="tamano"]:checked').value;
-                        var masa = document.querySelector('input[name="masa"]:checked').value;
-                        for (var i = 0; i < ingredientesSeleccionados.length; i++) {
-                            subtotal += ingredientesSeleccionados[i];
-                        }
-                        subtotal += parseInt(tamano) + parseInt(masa);
-                        var total = subtotal + 4800;
-                        document.getElementById("subtotal").innerHTML = "$" + subtotal.toFixed(2);
-                        document.getElementById("total").innerHTML = "$" + total.toFixed(2);
-                    }
-                    function actualizarIngredientes(valor, seleccionado) {
-                        if (seleccionado) {
-                            ingredientesSeleccionados.push(valor);
-                        } else {
-                            var index = ingredientesSeleccionados.indexOf(valor);
-                            if (index > -1) {
-                                ingredientesSeleccionados.splice(index, 1);
-                            }
-                        }
-                        actualizarSuma();
-                    }
-                </script>
-                <div class="h-100" id="place-order" >
-                    <div class="card rounded-0">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group mb-4 pb-2">
-                                    <label class="font-w600">Seleccione método de pago</label>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
-                                            <div class="custom-control custom-radio">
-                                                <input checked="" type="radio" id="cash" name="PaymentMethod" class="custom-control-input">
-                                                <label class="custom-control-label" for="cash"><span class="ms-2">Efectivo</span></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="card" name="PaymentMethod" class="custom-control-input">
-                                                <label class="custom-control-label" for="card"><span class="ms-2">Nequi</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-w600">Información personal</label>
-                                    <input type="text" id="nombre" name="nombre" class="form-control solid" placeholder="Escribir nombre completo"required >
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="id" name="id" class="form-control solid" placeholder="Escribir número de identificación" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="telefono" name="telefono" class="form-control solid" placeholder="Escribir número de teléfono" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="direccion" name="direccion" class="form-control solid" placeholder="Escribir dirección de entrega" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control solid" placeholder="Escribir código de descuento (Opcional)">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="card-order-footer">
-                        <div class="btn_box">
-                            <div class="row no-gutter mx-0">
-                                <a href="javascript:void(0);" id="place-order-cancel" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancelar</a>
-                                <button type="button" class="btn btn-primary btn-block col-6 m-0 rounded-0"  onclick="return validarCampos()" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Enviar orden</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                     </div>
             </div>
+
         </aside>
-        <div class="modal fade" id="exampleModalCenter">
+
+        <div class="modal fade" id="confirmOrderModal">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -288,26 +136,25 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>¿Estás seguro de que deseas realizar esta compra? Haz clic en 'confirmar' para procesar tu pago o en 'cancelar' para hacer cambios en tu pedido.</p>
+                        <p>¿Listo para ordernar? Haz clic en <strong>Confirmar</strong> para realizar el pedido o en <strong>Cancelar</strong> para hacer cambios en tu orden.</p>
+                        <h5 class="font-w100" id="error-title"></h5>
+                        <div id="error-message">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary"><a href="{% url 'davur:page-order' %}">Confirmar</a></button>
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-xl-12">
+                <!-- We create here a title where we explain that these are pizzas the user can do if its out of ideas -->
+                <h3 class="title">¿No sabes qué pedir?</h3>
+                <p class="mb-4">Aquí te mostramos algunas pizzas que puedes armar</p>
 
-            </div>
-            <div class="col-xl-12">
-                <div class="input-group search-area style-1 mb-4">
-                    <input type="text" class="form-control" placeholder="Busca aquí...">
-                    <div class="input-group-append">
-                        <button class=" btn btn-primary btn-rounded">Buscar<i class="flaticon-381-search-2 scale3 ms-3"></i></button>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
                         <div class="card item-card">
@@ -412,39 +259,64 @@
             </div>
         </div>
     </div>
+    </form>
+
 </div>
 {% endblock %}
 
 {% block additional_js %}
+
 <script>
 
-	function ItemsCarousel()
-	{
+$(document).ready(function() {
+  // Get the ingredient prices dictionary from the server
+  var ingredientPrices = {{ pizza_form.ingredients_prices}};
 
-		/*  testimonial one function by = owl.carousel.js */
-		jQuery('.item-carousel').owlCarousel({
-			loop:true,
-			margin:10,
-			nav:true,
-			center:true,
-			autoWidth:true,
-			autoplay:true,
-			dots: false,
-			items:4,
-			navText: ['', ''],
-			breackpoint:[
+  // Get the mass type prices dictionary from the server
+  var massTypePrices = {{ pizza_form.mass_types_prices}};
+
+  var sizePrices = {{ pizza_form.size_prices}};
+
+  // Function to calculate the total value based on selected options
+  function calculateTotalValue() {
+    var subtotal = 0;
+    var total = 0;
+
+    // Get the selected mass type value
+    var selectedMassType = $('#id_mass_type').val();
+    if (selectedMassType && selectedMassType in massTypePrices) {
+      subtotal += parseFloat(massTypePrices[selectedMassType]);
+    }
+
+    // Get the selected size value
+    var selectedSize = $('#id_size').val();
+    if (selectedSize && selectedSize in sizePrices) {
+      subtotal += parseFloat(sizePrices[selectedSize]);
+    }
+
+    // Get the selected ingredient values
+    var selectedIngredients = [];
+    $('input[name="ingredients"]:checked').each(function() {
+      var ingredientId = $(this).val();
+      if (ingredientId && ingredientId in ingredientPrices) {
+        subtotal += parseFloat(ingredientPrices[ingredientId]);
+      }
+    });
+
+    // Update the total value and subtotal in the <span> tags
+    $('#subTotal').text(subtotal.toFixed(2));
+    total = subtotal + 4800;
+    $('#total').text(total.toFixed(2));
+  }
+
+  // Event listener for checkboxes and select input
+  $('input[name="ingredients"], #id_mass_type, #id_size').on('change', function() {
+    calculateTotalValue();
+  });
+});
 
 
-			]
 
-		})
-	}
-
-	jQuery(window).on('load',function(){
-		setTimeout(function(){
-			ItemsCarousel();
-		}, 1000);
-	});
 
 	function handleTabs(){
 		$('#add-order-content,#place-order').css("display","none");
@@ -453,8 +325,12 @@
 			$('#home-counter').css("display","none");
 		})
 		$('#place-order-tab').on('click',function(){
-			$('#place-order').css("display","block");
-			$('#add-order-content').css("display","none");
+            if (isAllFilled) {
+                $('#place-order').css("display","block");
+                $('#add-order-content').css("display","none");
+            } else {
+                alert('Please fill in all required fields.');
+            }
 		})
 		$('#place-order-cancel').on('click',function(){
 			$('#place-order').css("display","none");
@@ -466,6 +342,7 @@
 		})
 	}
 	handleTabs();
-
 	</script>
+
+    <script src="{% static 'frontend/ajax/front-form-validations.js' %}"></script>
 {% endblock %}

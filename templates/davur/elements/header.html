@@ -4,12 +4,9 @@
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
-                    <div class="input-group search-area">
-                        <input type="text" class="form-control" placeholder="Search here...">
-                        <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
-                    </div>
                 </div>
 
+                {% if request.user.is_authenticated %}
                 <ul class="navbar-nav header-right">
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link dz-fullscreen primary" href="#">
@@ -17,13 +14,12 @@
                         </a>
                     </li>
 
-
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
                             <div class="header-info">
-                                <span>Hello, <strong>{{request.user.username}}</strong></span>
+                                <span>Hola, <strong>{{request.user.username}}</strong></span>
                             </div>
-                            <img src="{% static 'davur/images/profile/pic1.jpg' %}" width="20" alt=""/>
+                            <img src="{% static 'davur/images/avatar/admin-avatar.jpeg' %}" width="20" alt=""/>
                         </a>
 						<div class="dropdown-menu dropdown-menu-end" style="">
                             
@@ -33,6 +29,12 @@
                             </a>
 						</div>
                     </li>
+                    {% else %}
+                     <ul class="navbar-nav header-right">
+                    <li class="nav-item dropdown notification_dropdown">
+                        <a href="{% url 'webapp:index' %}" class="btn-primary btn-sm text-white">Ir al inicio</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

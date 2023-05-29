@@ -17,19 +17,22 @@ def validate_coupon(value) -> float:
             return discount
 
 
+def get_all_error_messages(*forms):
+    errors = []
+    for form in forms:
+        for field in form:
+            for error in field.errors:
+                if error not in errors and error != '':
+                    errors.append(f"*{field.name}: {error} \n")
+    return errors
+
+
 ## FORMS ##
 
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = '__all__'
-
-        labels = {
-            'name': 'Nombre completo*',
-            'cedula': 'Cédula*',
-            'address': 'Dirección de entrega*',
-            'phone_number': 'Número de teléfono*',
-        }
 
 
 class CouponRedemptionForm(forms.Form):
@@ -39,6 +42,7 @@ class CouponRedemptionForm(forms.Form):
         validators=[validate_coupon],
         label='Código de cupón',
         required=False,
+
     )
 
 
@@ -59,22 +63,33 @@ class PizzaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PizzaForm, self).__init__(*args, **kwargs)
 
-        # Update the widget choices based on the current availability of ingredients and mass types
-        self.fields['ingredients'].widget.choices = Ingredient.objects.filter(available=True).values_list('id', 'name')
-        self.fields['mass_type'].widget.choices = Mass.objects.filter(available=True).values_list('id', 'name')
+        # First we get the available mass types and ingredients
+        ingredients = Ingredient.objects.filter(available=True).values_list('id', 'name')
+        mass_types = Mass.objects.filter(available=True).values_list('id', 'name')
+        size_types = Size.objects.filter(available=True).values_list('id', 'name')
+
+        # Then we create the choices for the select inputs
+        self.fields['ingredients'].widget.choices = ingredients
+
+        self.fields['mass_type'].widget.choices = mass_types
+
+        self.fields['size'].widget.choices = size_types
+
+        # And finally we create three dictionaries where we store the prices of ingredients, sizes and masses
+        self.__generate_dicts()
 
     class Meta:
         model = Pizza
         fields = ['size', 'mass_type', 'ingredients']
-        labels = {
-            'size': 'Tamaño',
-            'mass_type': 'Masa',
-            'ingredients': 'Ingredientes',
-        }
         widgets = {
             'ingredients': forms.CheckboxSelectMultiple,
             'mass_type': forms.Select,
         }
+
+    def __generate_dicts(self):
+        self.ingredients_prices = dict(Ingredient.objects.filter(available=True).values_list('id', 'price_per_pizza'))
+        self.mass_types_prices = dict(Mass.objects.filter(available=True).values_list('id', 'price_per_pizza'))
+        self.size_prices = dict(Size.objects.filter(available=True).values_list('id', 'price_per_pizza'))
 
 
 class RatingForm(forms.ModelForm):

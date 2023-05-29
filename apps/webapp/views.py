@@ -1,11 +1,26 @@
+from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.core import signing
 from .forms import *
+
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    # We clean any previous order token that may be in the session
+    request.session['order_token'] = None
 
-def create_order(request, **kwargs):
+    context = {
+        "customer_form": CustomerForm(),
+        "order_form": OrderForm(),
+        "pizza_form": PizzaForm(),
+        "coupon_form": CouponRedemptionForm(),
+    }
+
+    return render(request, 'frontend/front-home.html', context)
+
+
+def create_order(request):
     if request.method == "POST":
 
         customer_form = CustomerForm(request.POST)
@@ -21,7 +36,7 @@ def create_order(request, **kwargs):
             customer = customer_form.save()
             order = order_form.save(commit=False)
 
-            # In case a coupon was given, we update his status and apply it to the order
+            # In case a coupon was given, we get the coupon object
             coupon = None
             if coupon_form.cleaned_data['code'] != '':
                 coupon = Coupon.objects.get(code=coupon_form.cleaned_data['code'])
@@ -34,20 +49,64 @@ def create_order(request, **kwargs):
 
             pizza.save(order=order, ingredients=ingredients)
 
-            # And finally we update the total value of the order with the pizza
+            # We update the total value of the order with the pizza
             order.calculate_total_value()
 
-            return redirect('webapp:index')
+            # Finally, we hash the order id and save it in the session as 'order_token'
+            request.session['order_token'] = signing.dumps(order.id)
+
+            return JsonResponse({'are_invalid': False, 'redirect_to': 'order-detail'})
+        else:
+            return JsonResponse({'are_invalid': True,
+                                 'errors': get_all_error_messages(customer_form, order_form, pizza_form, coupon_form)})
+
     else:
-        customer_form = CustomerForm()
-        order_form = OrderForm()
-        pizza_form = PizzaForm()
-        coupon_form = CouponRedemptionForm()
+        render(request, 'frontend/front-home.html')  # This is only a post view
 
-    return render(request, 'create_order.html', {
-        'pizza_form': pizza_form,
-        'customer_form': customer_form,
-        'order_form': order_form,
-        'coupon_form': coupon_form
-    })
 
+def order_detail(request):
+    # We get the token from the session
+    order_token = request.session.get('order_token', None)
+
+    # We get the order by the id with a try/except
+    try:
+        order = Order.objects.get(pk=signing.loads(order_token))
+        context = {
+            'order': order,
+            'pizza': order.pizza,
+            'ingredients': order.pizza.ingredients.all(),
+            'deliveryman': order.deliveryman,
+            'rating_form': RatingForm(),
+        }
+        return render(request, 'frontend/page-order-detail.html', context)
+
+    except (Order.DoesNotExist, TypeError):
+        return redirect('webapp:index')
+
+
+def rate_deliveryman(request):
+    if request.method == "POST":
+        rating_form = RatingForm(request.POST)
+        if rating_form.is_valid():
+            rating = rating_form.save(commit=False)
+
+            try:
+                order = Order.objects.get(pk=signing.loads(request.session.get('order_token', None)))
+                rating.save(order=order)
+                messages.success(request, '¡Gracias por calificar!')
+                return redirect('webapp:index')
+            except (Order.DoesNotExist, AttributeError):
+                return redirect('webapp:index')
+
+        else:
+            return redirect('webapp:order-detail')
+    else:
+        return redirect('webapp:index')
+
+
+def terms_and_conditions(request):
+    return render(request, 'frontend/front-terms-conditions.html')
+
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)

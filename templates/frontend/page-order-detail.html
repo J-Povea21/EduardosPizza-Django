@@ -1,0 +1,174 @@
+{% extends 'davur/elements/layouts/admin.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block additional_css %}
+{% endblock %}
+
+
+{% block content %}
+
+        <div class="form-head d-flex mb-3 align-items-start">
+            <div class="me-auto d-none d-lg-block">
+                <h2 class="text-primary font-w600 mb-0">Orden #{{ order.id }}</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)" class="text-primary">Detalles de la orden</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-xxl-4 col-lg-12 col-md-12">
+                <div class="row">
+
+                     <div class="col-xl-12 col-lg-6 ">
+                        <div class="card h-auto">
+                            <div class="card-body text-center">
+                                <img src="{% static 'frontend/images/avatar/deliveryman-avatar.jpeg' %}" width="150" class="rounded-circle mb-4" alt=""/>
+                                <h4 class="mb-3 text-black font-w600">{{ deliveryman }}</h4>
+                                <a href="javascript:void(0);" class="btn btn-primary light btn-xs">Repartidor</a>
+                            </div>
+                            <div class="card bg-primary sticky mb-0">
+                                <div class="card-header border-0 pb-0">
+                                    <h5 class="card-title text-white mt-2"><i class="fa fa-star text-white fs-10 me-3"></i>Estrellas</h5>
+                                </div>
+                                <div class="card-body pt-3">
+                                    <p class="fs-14 op8 text-white">El número de estrellas de {{ deliveryman }} es <strong>{{ deliveryman.stars }}.</strong>
+                                        {% if deliveryman.stars == 0 %}
+                                        ¡Es uno de nuestros nuevos repartidores!
+                                        {% endif %}
+                                    </p>
+
+                                        <h5 class="card-title text-white mt-10"><i class="fa fa-solid fa-phone fa-rotate-90 text-white fs-10 me-3"></i>Teléfono</h5>
+
+                                        <p class="fs-14 op8 text-white">{{ deliveryman.phone_number }}</p>
+                                </div>
+                                <div class="card-footer border-0 py-4 bg-warning rounded-xl">
+                                    <div class="media align-items-center">
+                                        <div class="media-body">
+                                            <h5 class="my-0 text-white"> Este repartidor ha sido calificado por <strong>{{ deliveryman.ratings_counter }}</strong> personas</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-12 col-lg-6">
+                        <div class="card">
+                            <div class="card-header border-0 pb-0">
+                                <h4 class="card-title">Resumen del pedido</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="widget-timeline-icon">
+                                    <ul class="timeline">
+
+                                        <!-- Información de la pizza -->
+
+                                        <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Tamaño de la pizza</h4>
+                                                <p class="fs-15 mb-0 ">{{ pizza.size }} ${{ pizza.size.price_per_pizza }}</p>
+                                                <p class="fs-15 mb-0 ">ㅤ</p>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Tipo de masa</h4>
+                                                <p class="fs-15 mb-0 ">{{ pizza.mass_type }} ${{ pizza.mass_type.price_per_pizza }}</p>
+                                                <p class="fs-15 mb-0 ">ㅤ</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Ingredientes</h4>
+                                                <!-- We make a list with the ingredients of the pizza -->
+                                                {% for ingredient in ingredients %}
+                                                    <p class="fs-15 mb-0 ">{{ ingredient.name }} ${{ ingredient.price_per_pizza }}</p>
+                                                {% endfor %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Cargo por envio</h4>
+                                                <p class="fs-15 mb-0 ">ㅤㅤㅤㅤㅤㅤㅤ $4800.00</p>
+                                                <p class="fs-15 mb-0 ">ㅤ</p>
+                                            </a>
+                                        </li>
+
+                                          <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Descuento</h4>
+                                                <p class="fs-15 mb-0 ">ㅤㅤㅤㅤㅤㅤㅤ ${{ order.discount }}</p>
+                                                <p class="fs-15 mb-0 ">ㅤ</p>
+                                            </a>
+                                        </li>
+
+
+                                        <li>
+                                            <div class="icon bg-primary"></div>
+                                            <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                <h4 class="mb-2">Total de la compra</h4>
+                                                <p class="fs-15 mb-0 ">${{ order.total_value }}</p>
+                                                <p class="fs-15 mb-0 ">ㅤ</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-xxl-8 col-lg-12 col-md-12">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="row align-items-center">
+                                <div class="col-lg-5">
+                                    <img src="{% static 'frontend/images/24x7.png' %}" alt="" class="img-fluid">
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h2 class="text-black main-title">¡Califícanos!</h2>
+                                            <p>¿Disfrutaste de nuestras deliciosas pizzas y nuestro servicio de entrega? ¡Comparte tu experiencia con nosotros y ayúdanos a seguir mejorando!</p>
+                                            <form method="POST" action="{% url 'webapp:rate-deliveryman' %}" class="mt-5">
+                                                {% csrf_token %}
+                                                <div class="form-group mb-3 pb-3">
+                                                    <label class="font-w600">¿Cuantas estrellas nos das?</label>
+                                                    {{ rating_form.rating_value|attr:"class:form-select" }}
+                                                </div>
+                                                <div class="form-group mb-3 pb-3">
+                                                    <label class="font-w600">Tu mensaje</label>
+                                                    {{ rating_form.message|attr:"class:form-control"| attr:"type:textarea" }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-rounded">Enviar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}
+
+
+
+{% block additional_js %}
+{% endblock %}
+
+
+
+
+

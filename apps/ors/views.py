@@ -1,14 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
-from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
 
 
+## CONTROL VIEWS ##
 def login_user(request):
     # Here we will validate the login form
     if request.method == 'POST':
@@ -19,7 +18,7 @@ def login_user(request):
             if user:
                 # If the user exists, we will try to log in the user
                 login(request, user)
-                return redirect('ors:admin_panel')
+                return redirect('ors:admin-panel')
             else:
                 messages.warning(request, 'El usuario no existe')
                 return render(request, 'davur/modules/login.html', {'form': form})
@@ -39,7 +38,6 @@ def logout_user(request):
     return redirect('ors:login')
 
 
-## General information of the bussiness ##
 @login_required(login_url='ors:login')
 def admin_panel(request):
     # In the context we will have the total amount of money earned, the total amount of orders, the total amount of
@@ -53,66 +51,45 @@ def admin_panel(request):
     return render(request, 'davur/statistics.html', context=context)
 
 
-# Here we use the LoginRequiredMixin to achieve the same result as the @login_required decorator
-# Thanks to the fact that a lot of views require the user to be logged in, we can use this class to avoid repeating
-class BaseListView(LoginRequiredMixin, ListView):
-    login_url = 'ors:login'
-
-    def get_context_data(self, **kwargs):
-        context = super(BaseListView, self).get_context_data(**kwargs)
-        context['title'] = self.title
-        return context
-
-
-class ReviewListView(BaseListView):
-    model = Rating
-    template_name = 'davur/reviews.html'
-    title = 'Reseñas'
-
-
-class OrderListView(BaseListView):
-    model = Order
-    template_name = 'davur/order_list.html'
-    title = 'Órdenes'
-
-
-class PizzaListView(BaseListView):
-    model = Pizza
-    template_name = 'davur/pizzas.html'
-    title = 'Pizzas'
-
-
-class CustomerListView(BaseListView):
-    model = Customer
-    template_name = 'davur/customers.html'
-    title = 'Clientes'
-
-
-class DeliverymanListView(BaseListView):
-    model = Deliveryman
-    template_name = 'davur/deliverymen.html'
-    title = 'Repartidores'
-
-
-class CouponListView(BaseListView):
-    model = Coupon
-    template_name = 'davur/coupons.html'
-    title = 'Cupones'
-
-
-class MassListView(BaseListView):
-    model = Mass
-    template_name = 'davur/masses.html'
-    title = 'Masa'
-
-
-class IngredientListView(BaseListView):
-    model = Ingredient
-    template_name = 'davur/ingredients.html'
-    title = 'Ingredientes'
-
-
 ## CRUD of the products ##
+
+def create_size(request):
+    if request.method == 'POST':
+        form = SizeForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
+    else:
+        form = SizeForm()
+
+    return render(request, 'davur/create/create_size.html', {'form': form})
+
+
+def edit_size(request, size_id):
+    size = Size.objects.get(pk=size_id)
+    if request.method == 'POST':
+        form = SizeForm(request.POST, instance=size)
+
+        if form.is_valid():
+            # Update the size with the new data
+            size.name = form.cleaned_data['name']
+            size.price = form.cleaned_data['price_per_pizza']
+            size.available = form.cleaned_data['available']
+
+            size.save(update_fields=['name', 'price_per_pizza', 'available'])
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
+    else:
+        # Populate the size form with the current data
+        form = SizeForm(instance=size)
+
+    # Render the template with the form
+    return render(request, 'davur/update/edit_size.html', {'form': form, 'size': size})
+
 
 def create_ingredient(request):
     if request.method == 'POST':
@@ -120,7 +97,9 @@ def create_ingredient(request):
 
         if form.is_valid():
             form.save()
-            return redirect('ors:ingredients')
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         form = IngredientForm()
 
@@ -139,7 +118,9 @@ def edit_ingredient(request, ingredient_id):
             ingredient.available = form.cleaned_data['available']
 
             ingredient.save(update_fields=['name', 'price_per_pizza', 'available'])
-            return redirect('ors:ingredients')
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         # Populate the ingredient form with the current data
         form = IngredientForm(instance=ingredient)
@@ -154,7 +135,9 @@ def create_mass(request):
 
         if form.is_valid():
             form.save()
-            return redirect('ors:masses')
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         form = MassForm()
     return render(request, 'davur/create/create_mass.html', {'form': form})
@@ -172,7 +155,9 @@ def edit_mass(request, mass_id):
             mass.available = form.cleaned_data['available']
 
             mass.save(update_fields=['name', 'price_per_pizza', 'available'])
-            return redirect('ors:masses')
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         # Populate the mass form with the current data
         form = MassForm(instance=mass)
@@ -186,9 +171,9 @@ def create_deliveryman(request):
 
         if form.is_valid():
             form.save()
-            return JsonResponse({'exists': False})  # Cedula is valid
+            return JsonResponse(form.generate_response())  # Cedula is valid
         else:
-            return JsonResponse({'exists': True, 'errors': form.errors})  # Cedula already exists
+            return JsonResponse(form.generate_response(has_errors=True))  # Cedula already exists
     else:
         form = DeliverymanCreationForm()
 
@@ -206,11 +191,12 @@ def edit_deliveryman(request, deliveryman_id):
             deliveryman.name = form.cleaned_data['name']
             deliveryman.cedula = form.cleaned_data['cedula']
             deliveryman.active = form.cleaned_data['active']
+            deliveryman.phone_number = form.cleaned_data['phone_number']
 
-            deliveryman.save(update_fields=['name', 'cedula', 'active'])
-            return JsonResponse({'exists': False})  # Cedula is valid
+            deliveryman.save(update_fields=['name', 'cedula', 'active', 'phone_number'])
+            return JsonResponse(form.generate_response())  # Cedula is valid
         else:
-            return JsonResponse({'exists': True, 'errors': form.errors})  # Cedula already exists
+            return JsonResponse(form.generate_response(has_errors=True))  # Cedula already exists
     else:
         form = DeliverymanCreationForm(instance=deliveryman)
 
@@ -222,16 +208,11 @@ def create_coupon(request):
         form = CouponCreationForm(request.POST)
 
         if form.is_valid():
-
-            coupon_already_exists = Coupon.objects.filter(code=form.cleaned_data['code']) \
-                .exists()
-
-            if coupon_already_exists:
-                return JsonResponse({'exists': True})  # Coupon code already exists
-            else:
-                # Once we check the coupon is valid, we save it
-                form.save()
-                return JsonResponse({'exists': False})  # Coupon code is valid
+            # If the coupon code is not already in use and the discount is valid, we save the coupon
+            form.save()
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         form = CouponCreationForm()
 
@@ -250,7 +231,9 @@ def edit_coupon(request, coupon_id):
             coupon.status = form.cleaned_data['status']
 
             coupon.save(update_fields=['code', 'discount', 'status'])
-            return redirect('ors:coupons')
+            return JsonResponse(form.generate_response())
+        else:
+            return JsonResponse(form.generate_response(has_errors=True))
     else:
         # Populate the coupon form with the current data
         form = CouponCreationForm(instance=coupon)

@@ -1,12 +1,13 @@
 davur_folder_name="davur"
 frontend_folder_name="frontend"
+general_folder_name="general"
 
 
 dz_array = {
     "davur":{
         "davur_views":{
         "public":{
-            "favicon":f"{davur_folder_name}/images/favicon.png",
+            "favicon":f"{general_folder_name}/images/favicon.png",
             "title":"Eduardo's Pizza",
             "social_image_url":"https://davur.dexignzone.com/django/social-image.png"
         },
@@ -531,8 +532,8 @@ dz_array = {
     "frontend":{
         "frontend_views":{
             "public":{
-                "favicon":f"{frontend_folder_name}/images/favicon.png",
-                "title":"Davur - Restaurant Django Admin Dashboard + FrontEnd",
+                "favicon":f"{general_folder_name}/images/favicon.png",
+                "title":"Eduardo's Pizza",
                 "social_image_url":"https://davur.dexignzone.com/django/social-image.png"
             },
             "global":{

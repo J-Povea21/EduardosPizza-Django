@@ -1,26 +1,18 @@
 {%  extends 'davur/elements/base_modal.html' %}
+{% load widget_tweaks %}
 
 {% block modal_title_block %}
     <h5 class="modal-title">Editando cupón '{{ coupon.code }}'</h5>
 {% endblock %}
 
 {% block form_block %}
-<form method="POST" action="{% url 'ors:edit_coupon' coupon.id %}">
+<form class="coupon-form" method="POST" action="{% url 'ors:edit-coupon' coupon.id %}">
     <div class="modal-body">
         <div class="basic-form">
 
             {% csrf_token %}
 
-            <label class ="form-label" for="name">Código</label>
-            {{ form.code }}
-
-            <br>
-            <label class ="form-label" for="price_per_pizza">Descuento</label>
-            {{ form.discount }}
-
-            <br>
-            <label class="form-label" for="available">Estado</label>"
-            {{ form.status }}
+            {% include 'davur/elements/base-coupon-form.html' %}
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>

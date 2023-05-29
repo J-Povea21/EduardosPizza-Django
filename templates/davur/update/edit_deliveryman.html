@@ -5,27 +5,15 @@
 {% endblock %}
 
 {% block form_block %}
-<form id = "deliveryman-form" method="POST" action="{% url 'ors:edit_deliveryman' deliveryman.id %}">
+<form class = "deliveryman-form" method="POST" action="{% url 'ors:edit-deliveryman' deliveryman.id %}">
     <div class="modal-body">
         <div class="basic-form">
 
             {% csrf_token %}
 
-            <label class ="form-label" for="name">Nombre</label>
-            {{ form.name }}
-
-            <br>
-            <label class ="form-label" for="cedula">Cédula</label>
-            {{ form.cedula }}
-
-            <br>
-            <label class ="form-label" for="active">Activo</label>
-            {{ form.active }}
+            {% include 'davur/elements/base-deliveryman-form.html' %}
 
             <div class="modal-footer">
-
-                <div id = "error-message"></div>
-
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>
                 <button type="submit" class="btn btn-primary">Guardar cambios</button>
             </div>
@@ -33,39 +21,3 @@
     </div>
 </form>
 {% endblock form_block %}
-
-{% block additionalAjax %}
-     <script>
-        $(document).ready(function() {
-      $('#deliveryman-form').submit(function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        var form = $(this);
-        var formData = form.serialize(); // Serialize the form data
-
-        // Send the AJAX request to check if cedula is valid
-        $.ajax({
-          url: form.attr('action'),
-          type: form.attr('method'),
-          data: formData,
-          success: function(response) {
-            // Check if coupon code is available
-            if (response.exists) {
-              // Show an error message in the modal
-              $('#error-message').text(response.errors.cedula[0]);
-            } else {
-              // Submit the form if coupon code is valid
-              window.location.href = 'deliverymen';
-            }
-          },
-          error: function(xhr, status, error) {
-            // Handle error if the AJAX request fails
-            console.error(xhr.responseText);
-          }
-        });
-      });
-    });
-    </script>
-
-{% endblock additionalAjax %}
-
