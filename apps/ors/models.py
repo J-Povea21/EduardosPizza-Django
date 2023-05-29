@@ -38,8 +38,7 @@ class Person(models.Model):
     name = models.CharField(max_length=30, blank=False)
     cedula = models.PositiveIntegerField(
         blank=False,
-        validators=[validate_cedula],
-        unique=True
+        validators=[validate_cedula]
     )
     phone_number = models.CharField(
         max_length=10,

@@ -7,11 +7,21 @@
 
 {% block content %}
 <div class="content-wrapper">
-
-    <form method="POST" action="{% url 'webapp:create-order' %}">
+    <form id="front-form" method="POST" action="{% url 'webapp:create-order' %}">
         {% csrf_token %}
     <!-- row -->
     <div class="listcontent-area">
+
+        {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show">
+                    {% for message in messages %}
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                            <strong>{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                            </button>
+                    {% endfor %}
+        </div>
+        {% endif %}
         <aside class="cart-area  dz-scroll" id="cart_area">
             <div class="" >
                 <div class="h-100" id="home-counter">
@@ -127,16 +137,9 @@
                     </div>
                     <div class="modal-body">
                         <p>¿Listo para ordernar? Haz clic en <strong>Confirmar</strong> para realizar el pedido o en <strong>Cancelar</strong> para hacer cambios en tu orden.</p>
-                           {% if messages %}
-                                <ul class="messages">
-                                {% for message in messages %}
-                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-                                    {{ message }}
-                                </li>
-                                {% endfor %}
-                                </ul>
-                           {% endif %}
+                        <h5 class="font-w100" id="error-title"></h5>
+                        <div id="error-message">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cancelar</button>
@@ -340,4 +343,6 @@ $(document).ready(function() {
 	}
 	handleTabs();
 	</script>
+
+    <script src="{% static 'frontend/ajax/front-form-validations.js' %}"></script>
 {% endblock %}

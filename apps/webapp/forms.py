@@ -17,6 +17,16 @@ def validate_coupon(value) -> float:
             return discount
 
 
+def get_all_error_messages(*forms):
+    errors = []
+    for form in forms:
+        for field in form:
+            for error in field.errors:
+                if error not in errors and error != '':
+                    errors.append(f"*{field.name}: {error} \n")
+    return errors
+
+
 ## FORMS ##
 
 class CustomerForm(forms.ModelForm):

@@ -1,6 +1,8 @@
 from django.urls import path, include
 from . import views
 
+handler404 = 'apps.webapp.views.handler404'
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('create-order/', views.create_order, name='create-order'),

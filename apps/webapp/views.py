@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.core import signing
 from .forms import *
@@ -55,10 +55,10 @@ def create_order(request):
             # Finally, we hash the order id and save it in the session as 'order_token'
             request.session['order_token'] = signing.dumps(order.id)
 
-            return redirect('webapp:order-detail')
+            return JsonResponse({'are_invalid': False, 'redirect_to': 'order-detail'})
         else:
-            messages.error(request, '¡El cupón no existe!')
-            return redirect('webapp:index')
+            return JsonResponse({'are_invalid': True,
+                                 'errors': get_all_error_messages(customer_form, order_form, pizza_form, coupon_form)})
 
     else:
         render(request, 'frontend/front-home.html')  # This is only a post view
@@ -106,3 +106,7 @@ def rate_deliveryman(request):
 
 def terms_and_conditions(request):
     return render(request, 'frontend/front-terms-conditions.html')
+
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
