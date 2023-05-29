@@ -15,7 +15,6 @@ def validate_cedula(value):
         raise ValidationError('La cédula debe contener 10 dígitos')
 
 
-
 def validate_price(value):
     if value < 0:
-        raise ValidationError('El precio debe ser mayor a 0')
+        raise ValidationError('El precio debe ser positivo')

@@ -77,18 +77,9 @@ class PizzaForm(forms.ModelForm):
         }
 
     def __generate_dicts(self):
-        self.ingredients_prices = {}
-        self.mass_types_prices = {}
-        self.size_prices = {}
-
-        for ingredient in self.fields['ingredients'].widget.choices:
-            self.ingredients_prices[ingredient[0]] = Ingredient.objects.get(id=ingredient[0]).price_per_pizza
-
-        for mass_type in self.fields['mass_type'].widget.choices:
-            self.mass_types_prices[mass_type[0]] = Mass.objects.get(id=mass_type[0]).price_per_pizza
-
-        for size_type in self.fields['size'].widget.choices:
-            self.size_prices[size_type[0]] = Size.objects.get(id=size_type[0]).price_per_pizza
+        self.ingredients_prices = dict(Ingredient.objects.filter(available=True).values_list('id', 'price_per_pizza'))
+        self.mass_types_prices = dict(Mass.objects.filter(available=True).values_list('id', 'price_per_pizza'))
+        self.size_prices = dict(Size.objects.filter(available=True).values_list('id', 'price_per_pizza'))
 
 
 class RatingForm(forms.ModelForm):

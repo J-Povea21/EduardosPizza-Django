@@ -1,0 +1,27 @@
+{% load widget_tweaks %}
+
+ <label class ="form-label" for="name">Nombre</label>
+{{ form.name|attr:"class:form-control input-rounded"|attr:"placeholder:Ej: Eduardo Angulo"|attr:"maxlength:30"|attr:"minlength:2" }}
+
+<br>
+<label class ="form-label" for="cedula">Cédula</label>
+{{ form.cedula| attr:"class:form-control input-rounded" }}
+
+<br>
+<label class="form-label" for="phone_number">Teléfono</label>
+{{ form.phone_number|attr:"class:form-control input-rounded"|attr:"placeholder:Ej: 3001234567"|attr:"maxlength:10"|attr:"minlength:10" | attr:"pattern:^[0-9]{3}[0-9]{4}[0-9]{3}" }}
+
+<br>
+
+<label class ="form-label" for="active">Activo</label>
+{{ form.active|attr:"class:form-check custom-checkbox mb-3 checkbox-info check-lg"}}
+
+<br>
+
+ <div id="error-message" class="align-content-center">
+       {% if error_message %}
+           {% for error in error_messages %}
+                  {{error}}
+            {% endfor %}
+       {% endif %}
+ </div>

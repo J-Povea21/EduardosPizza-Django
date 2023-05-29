@@ -5,23 +5,13 @@
 {% endblock %}
 
 {% block form_block %}
-<form method="POST" action="{% url 'ors:edit_ingredient' ingredient.id %}">
+<form class="needs-price-validation-form" method="POST" action="{% url 'ors:edit-ingredient' ingredient.id %}">
     <div class="modal-body">
         <div class="basic-form">
 
             {% csrf_token %}
 
-            <label class ="form-label" for="name">Nombre</label>
-            {{ form.name }}
-
-            <br>
-            <label class ="form-label" for="price_per_pizza">Precio por pizza</label>
-            {{ form.price_per_pizza }}
-
-            <br>
-            <label class="form-label" for="available">Disponible</label>"
-            {{ form.available }}
-
+            {% include 'davur/elements/base-product-form.html' %}
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>

@@ -1,15 +1,16 @@
 {% load static %}
 <div class="deznav">
     <div class="deznav-scroll">
+        {% if user.is_authenticated %}
         <ul class="metismenu" id="menu">
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-networking"></i>
                     <span class="nav-text">General</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'ors:admin_panel' %}">Estadísticas</a></li>
+                    <li><a href="{% url 'ors:admin-panel' %}">Estadísticas</a></li>
                     <li><a href="{% url 'ors:reviews' %}">Reseñas</a></li>
-                    <li><a href="{% url 'ors:order_list' %}">Ordenes</a></li>
+                    <li><a href="{% url 'ors:order-list' %}">Ordenes</a></li>
                     <li><a href="{% url 'ors:customers' %}">Clientes</a></li>
                     <li><a href="{% url 'ors:deliverymen' %}">Repartidores</a></li>
                     <li><a href="{% url 'ors:pizzas' %}">Pizzas</a></li>
@@ -30,10 +31,6 @@
                         <li><a href="{% url 'ors:ingredients' %}">Ingredientes</a></li>
                     </ul>
             </li>
-
-        <div class="copyright">
-            <p><strong>Davur - Restaurant Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-            <p>Made with <span class="heart"></span> by DexignZone</p>
-        </div>
+        {% endif %}
     </div>
 </div>

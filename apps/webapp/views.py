@@ -36,7 +36,7 @@ def create_order(request):
             customer = customer_form.save()
             order = order_form.save(commit=False)
 
-            # In case a coupon was given, we update his status and apply it to the order
+            # In case a coupon was given, we get the coupon object
             coupon = None
             if coupon_form.cleaned_data['code'] != '':
                 coupon = Coupon.objects.get(code=coupon_form.cleaned_data['code'])
@@ -57,6 +57,7 @@ def create_order(request):
 
             return redirect('webapp:order-detail')
         else:
+            messages.error(request, '¡El cupón no existe!')
             return redirect('webapp:index')
 
     else:
@@ -101,3 +102,7 @@ def rate_deliveryman(request):
             return redirect('webapp:order-detail')
     else:
         return redirect('webapp:index')
+
+
+def terms_and_conditions(request):
+    return render(request, 'frontend/front-terms-conditions.html')

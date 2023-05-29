@@ -1,3 +1,4 @@
+{% load static %}
 <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
@@ -10,9 +11,19 @@
 
                  {% endblock %}
 
+
+
       </div>
   </div>
 
+<!-- This section is for the javascript files that validates some of the form fields -->
+{%  if form.price_per_pizza %}
+      <script src="{% static 'davur/ajax/price-validation.js' %}"></script>
+{% elif form.discount %}
+    <script src="{% static 'davur/ajax/discount-code-validation.js' %}"></script>
+{% elif form.cedula %}
+    <script src="{% static 'davur/ajax/deliveryman-validation.js' %}"></script>
+{% endif %}
+
 {% block additionalAjax %}
 {% endblock %}
-

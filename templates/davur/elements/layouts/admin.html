@@ -60,14 +60,7 @@
         <!--**********************************
             Nav header end
         ***********************************-->
-		
-		<!--**********************************
-            Chat box start
-        ***********************************-->
-        {% include 'davur/elements/chatbox.html' %}
-		<!--**********************************
-            Chat box End
-        ***********************************-->
+
 		
 		<!--**********************************
             Header start
@@ -144,7 +137,7 @@
     {% for jsurl in dz_array.davur.davur_views.pagelevel.js|getdata:request.path %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
-    
+
     {% for jsurl in dz_array.davur.davur_views.global.js.bottom %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}

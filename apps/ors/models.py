@@ -66,7 +66,7 @@ class Deliveryman(Person):
 
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=7, blank=False)
+    code = models.CharField(max_length=7, blank=False, unique=True)
     discount = models.FloatField(validators=[
         MinValueValidator(0.1),
         MaxValueValidator(0.3)

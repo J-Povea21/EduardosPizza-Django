@@ -1,7 +1,7 @@
 (function($) {
-    /* "use strict" */
+    "use strict" 
 
- var dzChartlist = function(){
+ var dlabChartlist = function(){
 	
 	var screenWidth = $(window).width();
 	
@@ -45,9 +45,9 @@
 						{
 							label: "My First dataset",
 							data:  [35, 18, 30, 35, 40, 20, 30, 25, 22, 20, 45, 35],
-							borderColor: 'rgba(47, 76, 221, 1)',
+							borderColor: 'rgba(161,93,1)',
 							borderWidth: "0",
-							backgroundColor: 'rgba(47, 76, 221, 1)'
+							backgroundColor: 'rgba(161,93,1)'
 							
 						}
 					]
@@ -118,12 +118,12 @@
 				labels: ["0", "1", "2", "3", "4", "5", "6", "0", "1", "2", "3", "4", "5", "6"],
 				datasets: [{
 					label: "My First dataset",
-					backgroundColor: "rgba(105,255,147,1)",
-					strokeColor: "rgba(105,255,147,1)",
+					backgroundColor: "rgba(58,223,174,1)",
+					strokeColor: "rgba(58,223,174,1)",
 					pointColor: "rgba(0,0,0,0)",
-					pointStrokeColor: "rgba(105,255,147,1)",
-					pointHighlightFill: "rgba(105,255,147,1)",
-					pointHighlightStroke: "rgba(105,255,147,1)",
+					pointStrokeColor: "rgba(58,223,174,1)",
+					pointHighlightFill: "rgba(58,223,174,1)",
+					pointHighlightStroke: "rgba(58,223,174,1)",
 					data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40]
 				}]
 			};
@@ -248,8 +248,8 @@
 			const chart_widget_2 = document.getElementById("chart_widget_2").getContext('2d');
 			//generate gradient
 			const chart_widget_2gradientStroke = chart_widget_2.createLinearGradient(0, 0, 0, 250);
-			chart_widget_2gradientStroke.addColorStop(0, "#2f4cdd");
-			chart_widget_2gradientStroke.addColorStop(1, "#7c8fee");
+			chart_widget_2gradientStroke.addColorStop(0, "#430b58");
+			chart_widget_2gradientStroke.addColorStop(1, "#6c2586");
 
 			// chart_widget_2.attr('height', '100');
 
@@ -416,7 +416,7 @@
 			labels: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'forteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'],
 			datasets: [{
 				label: 'Expense',
-				backgroundColor: '#2f4cdd',
+				backgroundColor: '#430b58',
 				hoverBackgroundColor: '#6c2586', 
 				data: [
 					'20',
@@ -605,8 +605,8 @@
 		const chart_widget_7 = document.getElementById("chart_widget_7").getContext('2d');
 		//generate gradient
 		const chart_widget_7gradientStroke = chart_widget_7.createLinearGradient(0, 0, 0, 250);
-		chart_widget_7gradientStroke.addColorStop(0, "#ff6d4c");
-		chart_widget_7gradientStroke.addColorStop(1, "#ff6d4c");
+		chart_widget_7gradientStroke.addColorStop(0, "#ff2c53");
+		chart_widget_7gradientStroke.addColorStop(1, "#ff2c53");
 
 			// chart_widget_7.attr('height', '100');
 
@@ -792,12 +792,12 @@
 				labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 				datasets: [{
 					label: "Sales Stats",
-					backgroundColor: "#ff2c53",
-					borderColor: '#ff2c53',
-					pointBackgroundColor: '#ff2c53',
-					pointBorderColor: '#ff2c53',
-					pointHoverBackgroundColor: '#ff2c53',
-					pointHoverBorderColor: '#ff2c53',
+					backgroundColor: "#2780d4",
+					borderColor: '#2780d4',
+					pointBackgroundColor: '#2780d4',
+					pointBorderColor: '#2780d4',
+					pointHoverBackgroundColor: '#2780d4',
+					pointHoverBorderColor: '#2780d4',
 					borderWidth: 0, 
 					data: [20, 10, 18, 10, 32, 15, 15, 22, 18, 6, 12, 13]
 				}]
@@ -875,12 +875,12 @@
 				labels: ["January", "February", "March", "April", "May", "June"],
 				datasets: [{
 					label: "Sales Stats",
-					backgroundColor: "rgba(255, 109, 76, .5)",
-					borderColor: '#ff6d4c',
-					pointBackgroundColor: '#ff6d4c',
-					pointBorderColor: '#ff6d4c',
-					pointHoverBackgroundColor: '#ff6d4c',
-					pointHoverBorderColor: '#ff6d4c',
+					backgroundColor: "rgba(98, 126, 234, .5)",
+					borderColor: '#FF5E4B',
+					pointBackgroundColor: '#FF5E4B',
+					pointBorderColor: '#FF5E4B',
+					pointHoverBackgroundColor: '#FF5E4B',
+					pointHoverBorderColor: '#FF5E4B',
 					data: [0, 18, 14, 24, 16, 30]
 				}]
 			},
@@ -964,10 +964,10 @@
 					{
 						label: "My First dataset",
 						data: [55, 30, 90, 41, 86, 45, 80],
-						borderColor: '#2781d5',
+						borderColor: '#3693FF',
 						borderWidth: "2",
 						backgroundColor: 'transparent',  
-						pointBackgroundColor: '#2781d5', 
+						pointBackgroundColor: '#3693FF', 
 						pointRadius: 0
 					}
 				]
@@ -1024,10 +1024,10 @@
 					{
 						label: "My First dataset",
 						data: [25, 60, 30, 71, 26, 85, 50],
-						borderColor: '#ff6d4c',
+						borderColor: '#2780d4',
 						borderWidth: "2",
 						backgroundColor: 'transparent',  
-						pointBackgroundColor: '#ff6d4c', 
+						pointBackgroundColor: '#2780d4', 
 						pointRadius: 0
 					}
 				]
@@ -1086,10 +1086,10 @@
 						{
 							label: "My First dataset",
 							data: [25, 60, 30, 71, 26, 85, 50],
-							borderColor: 'rgba(47, 76, 221, 1)',
+							borderColor: 'rgba(161,93,1)',
 							borderWidth: "2",
-							backgroundColor: 'rgba(47, 76, 221, 1)',  
-							pointBackgroundColor: 'rgba(47, 76, 221, 1)', 
+							backgroundColor: 'rgba(161,93,1)',  
+							pointBackgroundColor: 'rgba(161,93,1)', 
 							pointRadius: 0
 						}
 					]
@@ -1163,7 +1163,8 @@
 				for (let i = 0; i < data.length; ++i) {
 					res.push([i, data[i]])
 				}
-				return res;
+				return res; 
+				
 			}
 
 			// Set up the control widget
@@ -1171,8 +1172,8 @@
 
 				if(jQuery('#chart_widget_17').length > 0 ){
 			
-				const chart = $.plot('#chart_widget_17', [getRandomData()], {
-					colors: ['#2f4cdd'],
+				 const chart = jQuery.plot('#chart_widget_17', [getRandomData()], {
+					colors: ['#430b58'],
 					series: {
 						lines: {
 							show: true,
@@ -1202,12 +1203,12 @@
 							color: '#fff'
 						}
 					}
-				});
+				}); 
 
 				function update_chart() {
-				chart.setData([getRandomData()]);
-				chart.draw();
-				setTimeout(update_chart, updateInterval);
+					chart.setData([getRandomData()]);
+					chart.draw();
+					setTimeout(update_chart, updateInterval);
 				}
 			
 				update_chart();
@@ -1285,7 +1286,7 @@
 		}	
 	}
 
-	var chartReinitialize = function(selector){
+	var chartReinitialize = function(selector, notInList = []){
 		jQuery(selector).empty();
 		jQuery(selector).each(function() {
 		  var attributes = $.map(this.attributes, function(item) {
@@ -1294,7 +1295,7 @@
 
 		  var thisObj = $(this);
 		  $.each(attributes, function(i, item) {
-			if(item != 'id'){
+			if(item != 'id' && (notInList.length === 0 || jQuery.inArray(item, notInList) === -1 )){
 				thisObj.removeAttr(item);
 			}
 		  });
@@ -1309,7 +1310,7 @@
 			
 			
 			load:function(){
-				activityChart();	
+				 activityChart();	
 				activeUser();
 				chartWidget1();	
 				chartWidget2();	
@@ -1318,7 +1319,7 @@
 				chartWidget5();
 				chartWidget6();
 				chartWidget7();
-				chartWidget8();
+				chartWidget8(); 
 				chartWidget9();
 				chartWidget10();
 				chartWidget11();
@@ -1326,7 +1327,7 @@
 				chartWidget15();
 				chartWidget16();
 				chartWidget17();
-				widgetSparkLinedash();
+				widgetSparkLinedash(); 
 				widgetSparkBar();
 				widgetStackedBarChart();
 				widgetTristate();
@@ -1347,12 +1348,12 @@
 	});
 		
 	jQuery(window).on('load',function(){
-		dzChartlist.load();
+		dlabChartlist.load();
 	});
 
 	jQuery(window).on('resize',function(){
 		setTimeout(function(){
-			dzChartlist.resize();	
+			dlabChartlist.resize();	
 		}, 500);
 		
 	});     
