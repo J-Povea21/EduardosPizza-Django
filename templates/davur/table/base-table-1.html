@@ -1,0 +1,69 @@
+{% extends 'davur/elements/layouts/admin.html' %}
+
+{% load static %}
+
+{% block additional_css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- row -->
+    <div class="container-fluid">
+            {% block additional_buttons %}
+            {% endblock %}
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive dataTablesCard">
+                    <table class="display mb-4 dataTable" style="min-width: 845px;">
+                        <thead>
+                            <tr>
+
+                                {% block table_headers %}
+
+                                {% endblock %}
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {% block table_content %}
+                        {% endblock %}
+
+
+                              <div class="bootstrap-modal">
+                                 <div class="modal fade" id="modal">
+                                    <div class="modal-dialog">
+
+                                     </div>
+                                </div>
+
+                             </div>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block additional_js %}
+    <script>
+     var $ = jQuery.noConflict();
+
+        // Open update ingredient modal
+        function openModal(url) {
+            $('#modal').load(url, function () {
+                $(this).modal('show');
+            });
+        }
+
+</script>
+
+{% endblock %}
+
+

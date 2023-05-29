@@ -1,0 +1,24 @@
+{%  extends 'davur/elements/base_modal.html' %}
+
+{% block modal_title_block %}
+    <h5 class="modal-title">Editando '{{ ingredient.name }}'</h5>
+{% endblock %}
+
+{% block form_block %}
+<form class="needs-price-validation-form" method="POST" action="{% url 'ors:edit-ingredient' ingredient.id %}">
+    <div class="modal-body">
+        <div class="basic-form">
+
+            {% csrf_token %}
+
+            {% include 'davur/elements/base-product-form.html' %}
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock form_block %}
+

@@ -1,0 +1,38 @@
+{% load static %}
+<header class="site-header mo-left header style-1">
+    <!-- Main Header -->
+    <div class="sticky-header main-bar-wraper navbar-expand-lg">
+        <div class="main-bar clearfix ">
+            <div class="container-fluid clearfix">
+                <!-- Website Logo -->
+                <div class="logo-header mostion logo-dark">
+                    <a href="{% url 'webapp:index' %}"><img src="{% static 'general/images/logo-text.png' %}" alt=""></a>
+                </div>
+                <!-- Nav Toggle Button -->
+                <button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <!-- Extra Nav -->
+
+                <div class="sidebar-menu">
+                    <div class="menu-btn navicon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="header-nav navbar-collapse collapse" id="navbarNavDropdown">
+                    <div class="logo-header">
+                        <img src="{% static 'frontend/images/avatar/1.jpg' %}" alt="">
+                    </div>
+                    <ul class="nav navbar-nav navbar navbar-left">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main Header End -->
+</header>

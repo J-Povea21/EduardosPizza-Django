@@ -1,0 +1,348 @@
+{% extends 'frontend/elements/layouts/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block additional_css %}
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <form id="front-form" method="POST" action="{% url 'webapp:create-order' %}">
+        {% csrf_token %}
+    <!-- row -->
+    <div class="listcontent-area">
+
+        {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show">
+                    {% for message in messages %}
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                            <strong>{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                            </button>
+                    {% endfor %}
+        </div>
+        {% endif %}
+        <aside class="cart-area  dz-scroll" id="cart_area">
+            <div class="" >
+                <div class="h-100" id="home-counter">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="{% static 'frontend/images/counter.jpg' %}" class="img-fluid mb-5" alt="">
+                            <h3 class="title mb-4">¿Listo para construir tu pizza perfecta?</h3>
+                            <p class="mb-sm-5 mb-3">Presiona el botón 'Agregar orden' para crear un pedido</p>
+                            <a href="javascript:void(0);" id="add-order" class="btn btn-warning btn-rounded me-3">Agregar orden</a>
+                        </div>
+                    </div>
+                </div>
+                    <div class="h-100" id="add-order-content">
+                    <div class="card rounded-0">
+                        <div class="card-body p-0">
+                        <!--Add a title to the card that says 'Ordenando' -->
+                            <h3 class="title mb-4">Información de la pizza</h3>
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona el tamaño: </label>
+                                <div class="mb-3 mb-0">
+                                   {{ pizza_form.size|attr:"class:form-select"}}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona el tipo de masa: </label>
+                                <div class="mb-3 mb-0">
+                                    {{ pizza_form.mass_type|attr:"class:form-select"}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Selecciona los ingredientes: </label>
+                            {{ pizza_form.ingredients }}
+                        </div>
+                                <h3 class="title mb-4">Datos personales</h3>
+                                <div class="form-group">
+                                    <label class="text-center font-w600">Nombre completo</label>
+                                   {{ customer_form.name|attr:"class:form-control input-rounded"| attr:"placeholder: Ej.: Juan Perez"}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Cédula</label>
+                                    {{ customer_form.cedula|attr:"type:number"|attr:"min:1"|attr:"class:form-control input-rounded"}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Número de teléfono</label>
+                                    {{ customer_form.phone_number|attr:"type:tel"|attr:"class:form-control input-rounded"|attr:"placeholder: Ej.: 3002227896"|attr:"pattern:[0-9]{3}[0-9]{4}[0-9]{3}" }}
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-w600">Dirección</label>
+                                    {{ customer_form.address|attr:"class:form-control input-rounded" }}
+                                </div>
+
+                                <div class="form-group mb-4 pb-2">
+                                    <label class="font-w600">Selecciona el método de pago</label>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-6 col-sm-6 col-md-6 col-lg-4">
+                                            {{ order_form.payment_method|attr:"class:form-select" }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4 class="title mb-4">Información adicional</h4>
+                                <div class="form-group">
+                                    {{ order_form.coupon_code}}
+                                </div>
+
+
+
+
+                    </div>
+                    <br><br><br><br><br><br><br><br><br><br>
+
+                    <div class="card-order-footer">
+                        <div class="amount-payble">
+                            <h5 class="d-flex text-right mb-0">
+                                <span class="text">SubTotal</span>
+                                <span class="me-0 ms-auto" id="subTotal" >0.00</span>
+                            </h5>
+                        </div>
+                        <div class="amount-payble">
+                            <h5 class="d-flex text-right mb-0">
+                                <span class="text">Cargo por envio</span>
+                                <span class="me-0 ms-auto" id="domicilePrice">4800.00</span>
+                            </h5>
+                        </div>
+                        <div class="amount-payble">
+                            <h5 class="d-flex text-right mb-0">
+                                <span class="text">Total a pagar</span>
+                                <span class="me-0 ms-auto" id="total">0.00</span>
+                            </h5>
+                        </div>
+                        <div class="btn_box">
+                            <div class="row no-gutter mx-0">
+                                <a href="javascript:void(0);" id="home-counter-tab" class="btn btn-danger btn-block col-6 m-0 rounded-0">Cancelar</a>
+                                <a  data-bs-toggle="modal" data-bs-target="#confirmOrderModal" class="btn btn-primary btn-block col-6 m-0 rounded-0">Realizar pedido</a>
+                            </div>
+                        </div>
+                    </div>
+
+                     </div>
+            </div>
+
+        </aside>
+
+        <div class="modal fade" id="confirmOrderModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmación del pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Listo para ordernar? Haz clic en <strong>Confirmar</strong> para realizar el pedido o en <strong>Cancelar</strong> para hacer cambios en tu orden.</p>
+                        <h5 class="font-w100" id="error-title"></h5>
+                        <div id="error-message">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <!-- We create here a title where we explain that these are pizzas the user can do if its out of ideas -->
+                <h3 class="title">¿No sabes qué pedir?</h3>
+                <p class="mb-4">Aquí te mostramos algunas pizzas que puedes armar</p>
+
+                <div class="row">
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-margarita-1-scaled.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza Margarita</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, tomate, mozzarella fresca y oregano.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-jamon.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza de Jamon</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza simple pero deliciosa con salsa de tomate, queso mozzarella y jamón cocido en cubos.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-pepperoni.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza de Pepperoni</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza con salsa de tomate, queso mozzarella y rodajas de pepperoni.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-awaiana.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza Hawaiana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza de inspiración tropical con salsa de tomate, queso mozzarella, jamón cocido y rodajas de piña.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-ve.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza Vegetariana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza sin carne con salsa de tomate, queso mozzarella y una variedad de verduras frescas, como maiz, pimentón, champiñones y aceitunas.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-c.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza de Champiñones</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, aceitunas negras, queso y champiñones.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-napolitana.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza Napolitana</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza clásica italiana con salsa de tomate, aceitunas negras y queso mozzarela.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-caprichosa.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza Capricciosa</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Pizza de la gastronomía italiana preparada con queso mozzarela, jamón italiano, tomate, pollo y champiñón.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-xxl-4 col-lg-6 col-md-12 col-sm-6">
+                        <div class="card item-card">
+                            <div class="card-body p-0">
+                                <img src="{% static 'frontend/images/dish/pizza-bacon.jpg' %}" class="img-fluid" alt="">
+                                <div class="info">
+                                    <h5 class="name">Pizza de Bacon</h5>
+                                    <h6 class="mb-0 price"><img src="{% static 'frontend/images/veg.png' %}" alt="">Una pizza con salsa de tomate, queso mozzarella, tocino cortado en trozos y champiñones frescos cortados en rodajas.</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block additional_js %}
+
+<script>
+
+$(document).ready(function() {
+  // Get the ingredient prices dictionary from the server
+  var ingredientPrices = {{ pizza_form.ingredients_prices}};
+
+  // Get the mass type prices dictionary from the server
+  var massTypePrices = {{ pizza_form.mass_types_prices}};
+
+  var sizePrices = {{ pizza_form.size_prices}};
+
+  // Function to calculate the total value based on selected options
+  function calculateTotalValue() {
+    var subtotal = 0;
+    var total = 0;
+
+    // Get the selected mass type value
+    var selectedMassType = $('#id_mass_type').val();
+    if (selectedMassType && selectedMassType in massTypePrices) {
+      subtotal += parseFloat(massTypePrices[selectedMassType]);
+    }
+
+    // Get the selected size value
+    var selectedSize = $('#id_size').val();
+    if (selectedSize && selectedSize in sizePrices) {
+      subtotal += parseFloat(sizePrices[selectedSize]);
+    }
+
+    // Get the selected ingredient values
+    var selectedIngredients = [];
+    $('input[name="ingredients"]:checked').each(function() {
+      var ingredientId = $(this).val();
+      if (ingredientId && ingredientId in ingredientPrices) {
+        subtotal += parseFloat(ingredientPrices[ingredientId]);
+      }
+    });
+
+    // Update the total value and subtotal in the <span> tags
+    $('#subTotal').text(subtotal.toFixed(2));
+    total = subtotal + 4800;
+    $('#total').text(total.toFixed(2));
+  }
+
+  // Event listener for checkboxes and select input
+  $('input[name="ingredients"], #id_mass_type, #id_size').on('change', function() {
+    calculateTotalValue();
+  });
+});
+
+
+
+
+	function handleTabs(){
+		$('#add-order-content,#place-order').css("display","none");
+		$('#add-order').on('click',function(){
+			$('#add-order-content').css("display","block");
+			$('#home-counter').css("display","none");
+		})
+		$('#place-order-tab').on('click',function(){
+            if (isAllFilled) {
+                $('#place-order').css("display","block");
+                $('#add-order-content').css("display","none");
+            } else {
+                alert('Please fill in all required fields.');
+            }
+		})
+		$('#place-order-cancel').on('click',function(){
+			$('#place-order').css("display","none");
+			$('#add-order-content').css("display","block");
+		})
+		$('#home-counter-tab').on('click',function(){
+			$('#home-counter').css("display","block");
+			$('#add-order-content').css("display","none");
+		})
+	}
+	handleTabs();
+	</script>
+
+    <script src="{% static 'frontend/ajax/front-form-validations.js' %}"></script>
+{% endblock %}

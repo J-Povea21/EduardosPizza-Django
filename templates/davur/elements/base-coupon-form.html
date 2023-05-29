@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+<label class ="form-label" for="name">Código</label>
+{{ form.code|attr:"class:form-control input-rounded" | attr:"placeholder: Código" |attr:"maxlength:7"|attr:"minlength:7" }}
+
+<br>
+<label class ="form-label" for="price_per_pizza">Descuento</label>
+{{ form.discount|attr:"class:form-control input-rounded" | attr:"placeholder: Descuento"|attr:"max:0.3"|attr:"min:0.1"}}
+
+<br>
+<label class="form-label" for="available">Estado</label>"
+{{ form.status|attr:"class:form-select"}}
+
+<br>
+
+<div id="error-message" class="align-content-center">
+   {% if error_message %}
+       {% for message in error_messages %}
+                 {{ message }}
+         {% endfor %}
+    {% endif %}
+</div>

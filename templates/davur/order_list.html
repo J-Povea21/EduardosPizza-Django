@@ -1,0 +1,40 @@
+{% extends 'davur/table/base-table-1.html' %}
+
+
+{% block additional_buttons %}
+
+
+ <div class="form-head dashboard-head d-md-flex d-block mb-5 align-items-start">
+     <h2 class="dashboard-title me-auto">{{ title }}</h2>
+ </div>
+
+{% endblock %}
+
+
+{% block table_headers %}
+
+<th scope="col">ID</th>
+<th scope="col">Cliente</th>
+<th scope="col">Método de pago</th>
+<th scope="col">Precio total</th>
+<th scope="col">Fecha</th>
+<th scope="col">Destino</th>
+<th scope="col">Repartidor</th>
+{% endblock %}
+
+{% block table_content %}
+
+    {% for order in object_list %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.customer.name }}</td>
+            <td>{{ order.payment_method }}</td>
+            <td>{{ order.total_value }}</td>
+            <td>{{ order.date }}</td>
+            <td>{{ order.destination }}</td>
+            <td>{{ order.deliveryman.name }}</td>
+
+        </tr>
+    {% endfor %}
+
+{% endblock %}

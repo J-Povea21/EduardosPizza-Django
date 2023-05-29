@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+
+<label class ="form-label" for="name">Nombre</label>
+{{ form.name|attr:"class:form-control input-rounded"|attr:"maxlength:30"| attr:"minlength:2"}}
+
+<br>
+<label class ="form-label" for="price_per_pizza">Precio por pizza</label>
+{{ form.price_per_pizza|attr:"class:form-control input-rounded" | attr:"min:0"}}
+
+<br>
+<label class="form-label" for="available">Disponible</label>"
+{{ form.available|attr:"class:form-check custom-checkbox mb-3 checkbox-info check-lgt" }}
+
+
+<br>
+
+<div id="error-message" class="align-content-center">
+    {% if error_message %}
+        {% for message in error_messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+</div>
